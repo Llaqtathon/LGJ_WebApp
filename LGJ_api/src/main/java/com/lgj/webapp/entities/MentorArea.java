@@ -1,5 +1,6 @@
 package com.lgj.webapp.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -19,16 +20,20 @@ public class MentorArea {
   @EmbeddedId
   MentorAreaKey id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @MapsId("mentorId")
   @JoinColumn(name = "mentor_id")
   private Mentor mentor;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @MapsId("areaId")
   @JoinColumn(name = "area_id")
   private Area area;
 
   @Column(name = "years_of_experience")
   private Integer yearsOfExperience;
+
+  @Column(name = "priority")
+  private Integer priority;
+  
 }

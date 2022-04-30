@@ -14,9 +14,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "MentorAvailability")
 public class MentorAvailability {
@@ -35,4 +39,5 @@ public class MentorAvailability {
   @Column(name = "date_end")
   @Temporal(TemporalType.TIMESTAMP)
   private Date date_end;
+
 }

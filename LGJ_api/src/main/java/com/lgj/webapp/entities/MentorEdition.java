@@ -1,21 +1,30 @@
 package com.lgj.webapp.entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lgj.webapp.CompositeKeys.MentorEditionKey;
 import com.lgj.webapp.util.GeneralStatus;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "mentor_edition")
 @Entity
 public class MentorEdition {
@@ -40,4 +49,8 @@ public class MentorEdition {
   @Column(name = "status")
   @Enumerated(value = EnumType.STRING)
   private GeneralStatus status;
+
+  
+  @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mentorEdition")
+  private List<MentorAvailability> availabilities;
 }
