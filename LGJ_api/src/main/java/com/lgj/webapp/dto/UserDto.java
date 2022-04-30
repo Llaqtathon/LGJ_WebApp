@@ -36,7 +36,7 @@ public class UserDto {
     private Date nacimiento;
     @NotBlank
     @NotNull
-    private int telefono;
+    private String telefono;
     @NotBlank
     @NotNull
     private Distrito distritoId;
