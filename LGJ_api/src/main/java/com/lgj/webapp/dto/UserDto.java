@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.sql.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.lgj.webapp.entities.Distrito;
 import com.lgj.webapp.util.RolSelection;
 
