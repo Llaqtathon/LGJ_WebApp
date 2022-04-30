@@ -19,7 +19,11 @@ public class UserDto {
     private String apellidos;
     private String email;
     private Date nacimiento;
-    private int telefono;
+    @NotBlank
+    @NotNull
+    private String telefono;
+    @NotBlank
+    @NotNull
     private Distrito distritoId;
     private String DNI;
     private String descripcion;

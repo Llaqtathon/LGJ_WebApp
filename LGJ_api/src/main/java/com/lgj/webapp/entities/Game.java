@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.lgj.webapp.dto.GameRequest;
@@ -49,7 +49,10 @@ public class Game {
         name = "games_platforms", 
         joinColumns = @JoinColumn(name = "game_id"), 
         inverseJoinColumns = @JoinColumn(name = "plarform_id"))
-    List<Platform> platforms = new ArrayList<>();
+    Set<Platform> platforms;
+
+    /*@OneToOne(mappedBy = "group", cascade = CascadeType.ALL)
+    private Group group;*/
 
     public Game(GameRequest gameRequest){
         this.name = gameRequest.getName();
