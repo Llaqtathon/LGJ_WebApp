@@ -13,10 +13,7 @@ public interface MentorAvailabilityRepository extends JpaRepository<MentorAvaila
   @Query(value = query_mentor_edition, nativeQuery = true)
   List<MentorAvailability> findByMentorIdAndEditionId(String mentorId, String editionId);
 
-  // MentorAvailability findMentorAvailabilityByMentorAvailabilityId(String mentorAvailabilityId);
   MentorAvailability findById(String id);
-
-  // List<MentorAvailability> findMentorAvailabilityByMentorIdAndEditionId(String mentorId, String editionId);
 
 }
   
