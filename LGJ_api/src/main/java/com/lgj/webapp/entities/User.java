@@ -19,8 +19,7 @@ import javax.persistence.Table;
 import com.lgj.webapp.util.GenderSelection;
 import com.lgj.webapp.util.RolSelection;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -43,9 +42,9 @@ public class User{
   @Column(name= "email", nullable = false)
   private String email;
   @Column(name= "nacimiento", nullable = false)
-  private Date nacimiento;
+  private LocalDate nacimiento;
   @Column(name= "telefono", nullable = false)
-  private int telefono;
+  private String telefono;
   @ManyToOne
   @JoinColumn(name = "distrito_id")
   private Distrito distrito;

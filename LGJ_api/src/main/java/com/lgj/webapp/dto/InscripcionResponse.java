@@ -1,0 +1,19 @@
+package com.lgj.webapp.dto;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.lgj.webapp.entities.User;
+import com.lgj.webapp.util.GeneralStatus;
+
+import lombok.Data;
+
+@Data
+public class InscripcionResponse {
+    private Long id;
+    private LocalDateTime fecha;
+    private String motivo;
+    private GeneralStatus status;
+    List<UserDto> users;
+    //private  Edicion edicion_id;
+}
