@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MentorEditionRepository extends JpaRepository<MentorEdition, Long> {
   
-  List<MentorEdition> findByMentorIdAndEditionId(String mentorId, String editionId);
-  List<Mentor> findMentorByEditionId(String editionId);
+  MentorEdition getOneByMentorIdAndEditionId(Long mentorId, Long editionId);
+  List<Mentor> findMentorByEditionId(Long editionId);
 }

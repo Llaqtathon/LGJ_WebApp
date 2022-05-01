@@ -19,12 +19,14 @@ import com.lgj.webapp.CompositeKeys.MentorEditionKey;
 import com.lgj.webapp.util.GeneralStatus;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Table(name = "mentor_edition")
 @Entity
 public class MentorEdition {
