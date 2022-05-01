@@ -2,19 +2,20 @@ package com.lgj.webapp.controllers;
 
 import java.util.List;
 
+import com.lgj.webapp.dto.InscripcionRequest;
 import com.lgj.webapp.dto.InscripcionResponse;
+import com.lgj.webapp.dto.OrderRequest;
+import com.lgj.webapp.dto.OrderResponse;
 import com.lgj.webapp.entities.Inscripcion;
+import com.lgj.webapp.entities.Order;
+import com.lgj.webapp.entities.User;
 import com.lgj.webapp.services.InscripcionService;
 import com.lgj.webapp.util.GeneralStatus;
 import com.lgj.webapp.util.InscripcionDtoConverter;
 
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpStatus;
 
@@ -28,6 +29,12 @@ public class InscripcionController {
     public InscripcionController(InscripcionService inscriptionService, InscripcionDtoConverter converter) {
         this.inscriptionService = inscriptionService;
         this.converter = converter;
+    }
+
+    @PostMapping
+    public ResponseEntity<InscripcionResponse> createInscripcion(@RequestBody Inscripcion request) {
+        Inscripcion inscripcion = inscriptionService.createInscripcion(request);
+        return new ResponseEntity<>(converter.convertEntityToDto(inscripcion), HttpStatus.CREATED);
     }
 
     @GetMapping("/user/{user_id}")

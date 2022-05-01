@@ -18,7 +18,9 @@ public class InscripcionService {
     public InscripcionService(InscripcionRepository repository) {
     this.inscripcionRepository = repository;
   }
-
+    public Inscripcion createInscripcion(Inscripcion request) {
+        return inscripcionRepository.save(request);
+    }
     //@Transactional(readOnly = true)
     public Inscripcion findById(Long id) {
     return inscripcionRepository.findByid(id);
