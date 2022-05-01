@@ -1,9 +1,11 @@
 package com.lgj.webapp.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+// import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,10 +27,12 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Getter
 @Inheritance (strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+// @Builder
+@SuperBuilder(toBuilder = true)
 @Table(name = "Users")
 public class User{
   @Id
@@ -64,4 +68,10 @@ public class User{
   @Enumerated(value = EnumType.STRING)
   private RolSelection rol;
 
+  public abstract static class UserBuilder<C extends User, B extends User.UserBuilder<C, B>> {
+    protected B $fillValuesFromUser(User instance) {
+        $fillValuesFromInstanceIntoBuilder(instance, this);
+        return self();
+    }
+  }
 }

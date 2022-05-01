@@ -28,6 +28,10 @@ public class Edition {
   private String name;
   @Column (name = "description", nullable = true)
   private String description;
+  @Column (name = "date_start_preproduction", nullable = true)
+  private Date dateStartPreproduction;
+  @Column (name = "date_end_postproduction", nullable = true)
+  private Date dateEndPostproduction;
   @Column (name = "date_start", nullable = true)
   private Date dateStart;
   @Column (name = "date_end", nullable = true)
