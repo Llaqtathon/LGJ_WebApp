@@ -17,4 +17,8 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public List<User> getAllParticipantByRol(RolSelection rol) {
+        return userRepository.findParticipantsByRol(rol);
+    }
 }
