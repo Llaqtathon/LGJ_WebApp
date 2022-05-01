@@ -54,7 +54,7 @@ public class UserController {
     }
     @GetMapping("/{rol}")
     public ResponseEntity<List<User>> findParticipantByRol(@PathVariable RolSelection rol) {
-        List<User> user = userService.getAllParticipantByRol(rol);
+        List<User> user = userService.getParticipantsByRol(rol);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
