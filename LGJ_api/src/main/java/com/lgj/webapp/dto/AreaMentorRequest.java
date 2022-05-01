@@ -11,7 +11,7 @@ import lombok.Data;
 public class AreaMentorRequest {
   @NotBlank
   @NotEmpty
-  private Long areaId;
+  private Integer areaId;
   private Integer yearsOfExperience;
   private AreaPriority priority;
 }

@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 // import lombok.Builder;
 import lombok.Getter;
@@ -41,8 +44,10 @@ public class Mentor extends User {
   @Column(name = "url_photo", nullable = true, length = 150)
   private String urlPhoto;
 
-  @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mentor")
-  private List<MentorArea> mentors_area;
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "mentor")
-  private List<MentorEdition> mentors_edition;
+  @Fetch(value = FetchMode.SUBSELECT)
+  private List<MentorArea> areas;
+  // @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "mentorEdition.mentorId", orphanRemoval = true, targetEntity = MentorAvailability.class)
+  // @Fetch(value = FetchMode.SUBSELECT)
+  // private List<MentorEdition> editions;
 }

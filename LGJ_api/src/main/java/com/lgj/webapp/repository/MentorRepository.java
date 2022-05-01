@@ -19,7 +19,9 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
   @Query(value = query_mentor_names, nativeQuery = true)
   List<Mentor> findByNamesOrLastNames(@Param("names") String names);
 
-  
+  String query_new_mentor = "INSERT INTO mentor (url_photo, mentor_id) VALUES (?1, ?2)";
+  @Query(value = query_new_mentor, nativeQuery = true)
+  Void saveOnlyMentor(String urlPhoto, Long mentorId);
 
   //agregar horario de disponibilidad
 

@@ -5,10 +5,7 @@ import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.lgj.webapp.entities.MentorEdition;
-
 import lombok.Data;
-
 @Data
 public class MentorAvailabilityResponse {
   private Long id;
@@ -16,5 +13,5 @@ public class MentorAvailabilityResponse {
   private Date dateStart;
   @Temporal(TemporalType.TIMESTAMP) //dia mes anio hora
   private Date dateEnd;
-  private MentorEdition mentorEdition;
+  // private MentorEdition mentorEdition;
 }
