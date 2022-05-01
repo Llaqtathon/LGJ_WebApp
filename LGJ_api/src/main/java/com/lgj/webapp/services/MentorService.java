@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import com.lgj.webapp.dto.MentorAreaRequest;
 import com.lgj.webapp.dto.MentorAvailabilitiesRequest;
-import com.lgj.webapp.dto.MentorStatusRequest;
 import com.lgj.webapp.entities.Mentor;
 import com.lgj.webapp.entities.MentorArea;
 import com.lgj.webapp.entities.MentorAvailability;
@@ -53,6 +52,11 @@ public class MentorService {
     this.mentorEditionRepository = mentorEditionRepository;
     this.userRepository = userRepository;
     this.areaRespository = areaRespository;
+  }
+  
+  @Transactional(readOnly = true)
+  public Mentor getMentorById(Long mentorId) {
+    return mentorRepository.getOne(mentorId);
   }
 
   @Transactional(readOnly = true)
@@ -107,13 +111,14 @@ public class MentorService {
   }
 
   @Transactional
-  public Mentor updateMentor(Mentor mentor) {
+  public Mentor updateMentor(Long mentorId, Mentor mentor) {
+    mentor.setId(mentorId);
     return mentorRepository.save(mentor);
   }
 
   @Transactional
-  public List<MentorArea> saveMentorArea(MentorAreaRequest mentorArea) {
-    Mentor mentor = mentorRepository.getOne(mentorArea.getMentorId());
+  public List<MentorArea> saveMentorAreas(Long mentorId, MentorAreaRequest mentorArea) {
+    Mentor mentor = mentorRepository.getOne(mentorId);
     List<MentorArea> mentorAreas = mentorArea.getAreas()
       .stream()
       .map(area ->
@@ -130,21 +135,25 @@ public class MentorService {
   }
 
   //disponibilidad
+  @Transactional(readOnly = true)
+  public List<MentorAvailability> getMentorAvailabilities(Long mentorId, Long editionId) {
+    return mentorAvailabilityRepository.findAvailabilityByMentorIdAndEditionId(mentorId, editionId);
+  }
+
   @Transactional
-  public List<MentorAvailability> saveMentorAvailability(MentorAvailabilitiesRequest maRequest) {
+  public List<MentorAvailability> saveMentorAvailability(
+    Long editionId, Long mentorId,
+    MentorAvailabilitiesRequest maRequest) {
     MentorEdition mentorEdition = (MentorEdition) mentorEditionRepository
-        .getOneByMentorIdAndEditionId(
-          maRequest.getMentor_id(),
-          maRequest.getEdition_id()
-        );
+        .getOneByMentorIdAndEditionId(mentorId, editionId);
     List<MentorAvailability> mentorAvailabilities = maRequest.getAvailabilities()
       .stream()
       .map(availability ->
         MentorAvailability.builder()
         .id(availability.getMentorAvailabilityId())
         .mentorEdition(mentorEdition)
-        .date_start(availability.getDateStart())
-        .date_end(availability.getDateEnd())
+        .dateStart(availability.getDateStart())
+        .dateEnd(availability.getDateEnd())
         .build()
       )
       .collect(Collectors.toList());
@@ -170,13 +179,11 @@ public class MentorService {
   }
   
   @Transactional
-  public MentorEdition updateStatus(MentorStatusRequest mStatusRequest) {
+  public MentorEdition updateStatus(
+    Long mentorId, Long editionId, GeneralStatus status) {
     MentorEdition mentorEdition = mentorEditionRepository
-      .getOneByMentorIdAndEditionId(
-        mStatusRequest.getMentorId(),
-        mStatusRequest.getEditionId()
-      );
-    mentorEdition.setStatus(mStatusRequest.getStatus());
+          .getOneByMentorIdAndEditionId(mentorId, editionId);
+    mentorEdition.setStatus(status);
     return mentorEditionRepository.save(mentorEdition);
   }
 

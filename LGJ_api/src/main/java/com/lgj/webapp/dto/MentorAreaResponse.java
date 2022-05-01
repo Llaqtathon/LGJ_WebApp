@@ -8,8 +8,9 @@ import lombok.Data;
 
 @Data
 public class MentorAreaResponse {
+  private int id;
   private int areaId;
-  private int mentorId;
+  private Long mentorId;
   private String name;
   private Date yearsOfExperience;
   private AreaPriority priority;

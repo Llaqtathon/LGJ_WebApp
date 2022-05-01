@@ -37,9 +37,9 @@ public class MentorAvailability {
   private MentorEdition mentorEdition;
   @Column(name = "date_start")
   @Temporal(TemporalType.TIMESTAMP) //dia mes anio hora
-  private Date date_start;
+  private Date dateStart;
   @Column(name = "date_end")
   @Temporal(TemporalType.TIMESTAMP)
-  private Date date_end;
+  private Date dateEnd;
 
 }

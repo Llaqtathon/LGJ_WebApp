@@ -11,7 +11,7 @@ public interface MentorAvailabilityRepository extends JpaRepository<MentorAvaila
   
   String query_mentor_edition = "select * from mentor_availability ma where mentor_id = ?1 and edition_id = ?2";
   @Query(value = query_mentor_edition, nativeQuery = true)
-  List<MentorAvailability> findByMentorIdAndEditionId(String mentorId, String editionId);
+  List<MentorAvailability> findAvailabilityByMentorIdAndEditionId(Long mentorId, Long editionId);
 
   MentorAvailability findById(String id);
 
