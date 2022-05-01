@@ -1,7 +1,8 @@
 package com.lgj.webapp.services;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+// import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,7 +92,7 @@ public class MentorService {
       return null;
     }
     Mentor mentor = mentorRepository.getOne(userId);
-    mentor.setRol(RolSelection.Mentor);
+    mentor.setRol(RolSelection.MENTOR);
     return mentor;
   }
 
@@ -102,13 +103,13 @@ public class MentorService {
     //nombres, apellidos, url_photo, areas
     //si vacio poner valores por defecto
     String defaultUsername = mentor.getNombres().substring(4) + "." + mentor.getApellidos().substring(4);
-    mentor.setRol(RolSelection.Mentor);
+    mentor.setRol(RolSelection.MENTOR);
     mentor.setDni("88888888");
     if (mentor.getTelefono() == null) {
       mentor.setTelefono("99999999");
     }
     if (mentor.getNacimiento() == null) {
-      mentor.setNacimiento(new SimpleDateFormat("yyyy/MM/dd").parse("1990/01/01") );
+      mentor.setNacimiento(LocalDate.parse("1990-01-01") );
     }
     if (mentor.getEmail() == null) {
       mentor.setEmail(defaultUsername + "@confirmar.com");
@@ -226,22 +227,23 @@ public class MentorService {
   }
 
   @Transactional
-  public MentorEdition createMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
-    Mentor mentor = mentorRepository.getOne(mentorId);
+  public MentorEdition createMentorEdition(Long editionId, MentorEditionRequest request) {
+    Mentor mentor = mentorRepository.getOne(request.getMentorId());
     Edition edition = editionRepository.getOne(editionId);
-    MentorEditionKey mentorEditionKey = new MentorEditionKey(mentorId, editionId);
+    MentorEditionKey mentorEditionKey = new MentorEditionKey(request.getMentorId(), editionId);
     MentorEdition mentorEdition = MentorEdition.builder()
       .id(mentorEditionKey)
       .mentor(mentor)
       .edition(edition)
-      .status(status.getStatus())
+      .status(request.getStatus())
       .build();
     return mentorEditionRepository.save(mentorEdition);
   }
   @Transactional
-  public MentorEdition updateMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
-    MentorEdition mentorEdition =  mentorEditionRepository.getOneByMentorIdAndEditionId(mentorId, editionId);
-    mentorEdition.setStatus(status.getStatus());
+  public MentorEdition updateMentorEdition(Long editionId, MentorEditionRequest request) {
+    MentorEdition mentorEdition =  mentorEditionRepository.getOneByMentorIdAndEditionId(
+      request.getMentorId(), editionId);
+    mentorEdition.setStatus(request.getStatus());
     return mentorEditionRepository.save(mentorEdition);
   }
 

@@ -16,7 +16,7 @@ import com.lgj.webapp.entities.MentorArea;
 import com.lgj.webapp.entities.MentorAvailability;
 import com.lgj.webapp.entities.MentorEdition;
 import com.lgj.webapp.services.MentorService;
-import com.lgj.webapp.util.EntityDtoConverter;
+import com.lgj.webapp.util.MentorDtoConverter;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/mentors")
 public class MentorController {
   private MentorService mentorService;
-  private EntityDtoConverter converter;
+  private MentorDtoConverter converter;
 
-  public MentorController(MentorService mentorService, EntityDtoConverter converter) {
+  public MentorController(MentorService mentorService, MentorDtoConverter converter) {
     this.mentorService = mentorService;
     this.converter = converter;
   }
@@ -82,20 +82,18 @@ public class MentorController {
     List<MentorEdition> mentors = mentorService.findMentorEditionByEditionId(ed_id);
     return new ResponseEntity<>(converter.convertMentorEditionToMentorDto(mentors), HttpStatus.OK);
   }
-  @PostMapping("/edition/{editionId}/{mentorId}")
+  @PostMapping("/edition/{editionId}")
   public ResponseEntity<MentorEditionResponse> createMentorStatus(
-    @PathVariable String editionId, @PathVariable String mentorId, @RequestBody MentorEditionRequest status) {
+    @PathVariable String editionId, @RequestBody MentorEditionRequest request) {
     Long ed_id = Long.parseLong(editionId);
-    Long mid = Long.parseLong(mentorId);
-    MentorEdition mentor = mentorService.createMentorEdition(mid, ed_id, status);
+    MentorEdition mentor = mentorService.createMentorEdition(ed_id, request);
     return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.CREATED);
   }
-  @PutMapping("/edition/{editionId}/{mentorId}")
+  @PutMapping("/edition/{editionId}")
   public ResponseEntity<MentorEditionResponse> updateMentorStatus(
-    @PathVariable String editionId, @PathVariable String mentorId, @RequestBody MentorEditionRequest status) {
+    @PathVariable String editionId, @RequestBody MentorEditionRequest request) {
     Long ed_id = Long.parseLong(editionId);
-    Long mid = Long.parseLong(mentorId);
-    MentorEdition mentor = mentorService.updateMentorEdition(mid, ed_id, status);
+    MentorEdition mentor = mentorService.updateMentorEdition(ed_id, request);
     return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
   }
 
