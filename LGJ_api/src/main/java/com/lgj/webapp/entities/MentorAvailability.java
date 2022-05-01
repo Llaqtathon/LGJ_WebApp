@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder(toBuilder = true)
 @Table(name = "MentorAvailability")
 public class MentorAvailability {
   @Id
@@ -35,9 +37,9 @@ public class MentorAvailability {
   private MentorEdition mentorEdition;
   @Column(name = "date_start")
   @Temporal(TemporalType.TIMESTAMP) //dia mes anio hora
-  private Date date_start;
+  private Date dateStart;
   @Column(name = "date_end")
   @Temporal(TemporalType.TIMESTAMP)
-  private Date date_end;
+  private Date dateEnd;
 
 }

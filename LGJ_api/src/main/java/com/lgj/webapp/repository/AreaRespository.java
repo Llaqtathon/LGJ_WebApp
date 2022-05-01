@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AreaRespository extends JpaRepository<Area, Long> {
   
   Area findById(String areaId);
+  Area getOne(Long id);
 
 }
