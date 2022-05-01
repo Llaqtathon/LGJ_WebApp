@@ -34,7 +34,7 @@ public class User{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "username", nullable = false)
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
   @Column(name = "password", nullable = false)
   private String password;
@@ -42,7 +42,7 @@ public class User{
   private String nombres;
   @Column(name = "apellidos", nullable = false)
   private String apellidos;
-  @Column(name= "email", nullable = false)
+  @Column(name= "email", nullable = false, unique = true)
   private String email;
   @Column(name= "nacimiento", nullable = false)
   private LocalDate nacimiento;
@@ -63,5 +63,4 @@ public class User{
   @Column(name = "rol")
   @Enumerated(value = EnumType.STRING)
   private RolSelection rol;
-
 }
