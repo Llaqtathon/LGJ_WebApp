@@ -66,9 +66,15 @@ public class MentorController {
   }
   @PostMapping("/user/{userId}")
   public ResponseEntity<MentorResponse> createMentorFromUser(@PathVariable String userId) {
-    Mentor mentor = mentorService.mentorFromUserId( Long.parseLong(userId) );
+    Mentor mentor = mentorService.setMentorFromUser(Long.parseLong(userId));
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.CREATED);
   }
+  // public ResponseEntity<Integer> createMentorFromUser(@PathVariable String userId) {
+  //   return new ResponseEntity<>(
+  //     mentorService.mentorFromUserId( Long.parseLong(userId) ),
+  //     HttpStatus.OK
+  //   );
+  // }
 
   @GetMapping("/edition/{editionId}")
   public ResponseEntity<List<MentorEditionResponse>> findAllMentors(@PathVariable String editionId) {
