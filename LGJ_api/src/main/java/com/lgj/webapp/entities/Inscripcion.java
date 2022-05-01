@@ -43,7 +43,7 @@ public class Inscripcion {
     @Enumerated(value = EnumType.STRING)
     private GeneralStatus status;
     //Aun no se ha creado tabla edicion cuando se cree descomentar
-    //@ManyToOne
-    //@JoinColumn(name = "edicion_id")
-    //private Edicion edicion_id;
+    @ManyToOne
+    @JoinColumn(name = "edicion_id")
+    private Edition edicion_id;
 }
