@@ -8,16 +8,18 @@ import java.util.List;
 import com.lgj.webapp.entities.Game; 
 
 public interface GameRepository extends JpaRepository<Game, Long> {
-    @Query("SELECT o FROM Order o WHERE o.accountId = ?1")//jpql
-    List<Game> findGameByUserId(String accountId);
+    /*Query for getting all games by user id, user is in a group and the group has a game
+    @Query("""
+        SELECT g
+        FROM Game g
+        WHERE g.group.id = ?1
+        ORDER BY g.name
+    """)//jpql
+    List<Game> findGameByUserId(String accountId);*/
 
-    List<Game> findGamesByPlatformsId(String accountId); // native query
-    //List<Game> findGamesByPlatformIdNative(String accountId); // native query
+    List<Game> findGamesByPlatformsId(String accountId); 
     // Check documentation for more info
   
     Game findGameById(String gameId);
-    
-    @Query(value = "SELECT  * FROM orders o WHERE o.order_id = ?1", nativeQuery = true)//sql
-    Game findGameByOrderIdNative(String gameId);
 }
 

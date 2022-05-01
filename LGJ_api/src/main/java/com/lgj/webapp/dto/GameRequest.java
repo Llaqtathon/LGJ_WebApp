@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class GameRequest {
-
+    
     @NotBlank
     private String name;
     @NotBlank
@@ -21,6 +21,5 @@ public class GameRequest {
     private String description;
     @NotBlank
     private String fotoUrl;
-   // private List<Platform> platforms;
-
+    private List<Platform> platforms;
 }

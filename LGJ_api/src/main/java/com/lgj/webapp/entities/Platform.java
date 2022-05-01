@@ -20,9 +20,9 @@ public class Platform {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-
+    
     @ManyToMany(mappedBy = "platforms")
     List<Game> games = new ArrayList<>();
 }
