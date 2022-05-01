@@ -14,6 +14,6 @@ public class InscripcionResponse {
     private LocalDateTime fecha;
     private String motivo;
     private GeneralStatus status;
-    List<UserDto> users;
+    private User users;
     //private  Edicion edicion_id;
 }
