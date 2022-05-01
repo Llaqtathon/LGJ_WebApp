@@ -19,4 +19,10 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    @Transactional(readOnly = true)
+    public List<User> findByPartOfFullName(String text) {
+      List<User> users = userRepository.findByNamesOrLastNames(text);
+      return users;
+    }
 }
