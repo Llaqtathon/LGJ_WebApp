@@ -16,12 +16,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lgj.webapp.util.GenderSelection;
 import com.lgj.webapp.util.RolSelection;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Entity
@@ -63,4 +65,6 @@ public class User{
   @Column(name = "rol")
   @Enumerated(value = EnumType.STRING)
   private RolSelection rol;
+  @OneToMany(mappedBy = "user")
+  private Set<UserMicroE> interesado;
 }
