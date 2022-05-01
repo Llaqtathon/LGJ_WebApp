@@ -2,19 +2,22 @@ package com.lgj.webapp.dto;
 
 import java.util.List;
 
-import com.lgj.webapp.util.GeneralStatus;
+import lombok.Builder;
+
+// import com.lgj.webapp.util.GeneralStatus;
 
 import lombok.Data;
 
+@Builder
 @Data
 public class MentorResponse {
-  private String mentorId;
-  private String names;
-  private String lastNames;
-  private String photoUrl;
-  private GeneralStatus status;
-  List<MentorAvailabilityResponse> availabilities;
+  private Long mentorId;
+  private String nombres;
+  private String apellidos;
+  private String urlPhoto;
+  // private GeneralStatus status;
   List<MentorAreaResponse> areas;
+  // List<MentorAvailabilityResponse> availabilities;
   //TIMELINE
   //muestro: nombres, apellidos, areas, disponibilidad, status
   // String query_timeline = "select u.id, u.nombres, u.apellidos, a.name, "

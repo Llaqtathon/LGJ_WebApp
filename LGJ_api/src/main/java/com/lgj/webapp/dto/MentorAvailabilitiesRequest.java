@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class MentorAvailabilitiesRequest {
   @NotNull
-  private Long mentor_id;
+  private Long mentorId;
   @NotNull
-  private Long edition_id;
+  private Long editionId;
   @NotNull
   private List<MentorAvailabilityRequest> availabilities;
 }

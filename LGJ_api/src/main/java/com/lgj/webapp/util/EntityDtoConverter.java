@@ -12,6 +12,7 @@ import com.lgj.webapp.entities.Mentor;
 import com.lgj.webapp.entities.MentorArea;
 import com.lgj.webapp.entities.MentorAvailability;
 import com.lgj.webapp.entities.MentorEdition;
+// import com.lgj.webapp.entities.DEL_MentorEditionAvailab;
 import com.lgj.webapp.entities.Order;
 
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,24 @@ public class EntityDtoConverter {
   public List<MentorResponse> convertMentorToDto(List<Mentor> mentors) {
     return mentors.stream()
       .map(mentor -> convertMentorToDto(mentor))
+      .collect(Collectors.toList());
+  }
+  public MentorEditionResponse convertMentorEditionToMentorDto(MentorEdition mentorEdition) {
+    return MentorEditionResponse.builder()
+      .mentorId(mentorEdition.getMentor().getId())
+      .editionId(mentorEdition.getEdition().getId())
+      .nombres(mentorEdition.getMentor().getNombres())
+      .apellidos(mentorEdition.getMentor().getApellidos())
+      .urlPhoto(mentorEdition.getMentor().getUrlPhoto())
+      .status(mentorEdition.getStatus())
+      .areas(convertMentorAreaToDto(mentorEdition.getMentor().getAreas()))
+      .availabilities(convertMentorAvailabilityToDto(mentorEdition.getAvailabilities()))
+      .build();
+    // return modelMapper.map(mentorEdition, MentorEditionResponse.class);
+  }
+  public List<MentorEditionResponse> convertMentorEditionToMentorDto(List<MentorEdition> mentorsEdition) {
+    return mentorsEdition.stream()
+      .map( mEdition -> convertMentorEditionToMentorDto(mEdition) )
       .collect(Collectors.toList());
   }
 

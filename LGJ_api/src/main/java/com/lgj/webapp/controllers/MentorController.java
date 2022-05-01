@@ -7,7 +7,9 @@ import com.lgj.webapp.dto.MentorAreaRequest;
 import com.lgj.webapp.dto.MentorAreaResponse;
 import com.lgj.webapp.dto.MentorAvailabilitiesRequest;
 import com.lgj.webapp.dto.MentorAvailabilityResponse;
+import com.lgj.webapp.dto.MentorEditionRequest;
 import com.lgj.webapp.dto.MentorEditionResponse;
+import com.lgj.webapp.dto.MentorRequest;
 import com.lgj.webapp.dto.MentorResponse;
 import com.lgj.webapp.entities.Mentor;
 import com.lgj.webapp.entities.MentorArea;
@@ -15,7 +17,6 @@ import com.lgj.webapp.entities.MentorAvailability;
 import com.lgj.webapp.entities.MentorEdition;
 import com.lgj.webapp.services.MentorService;
 import com.lgj.webapp.util.EntityDtoConverter;
-import com.lgj.webapp.util.GeneralStatus;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +52,17 @@ public class MentorController {
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.OK);
   }
   @PutMapping("/{mentorId}")
-  public ResponseEntity<MentorResponse> updateMentor(@RequestBody Mentor request, @PathVariable String mentorId) {
+  public ResponseEntity<MentorResponse> updateMentor(@RequestBody MentorRequest request, @PathVariable String mentorId) {
     Mentor mentor = mentorService.updateMentor(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.OK);
+  }
+  @GetMapping("/{editionId}/{mentorId}")
+  public ResponseEntity<MentorEditionResponse> findMentorByIdAndEditionId(
+    @PathVariable String editionId, @PathVariable String mentorId) {
+    Long ed_id = Long.parseLong(editionId);
+    Long mid = Long.parseLong(mentorId);
+    MentorEdition mentor = mentorService.findByIdAndEditionId(mid, ed_id);
+    return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
   }
   @PostMapping("/user/{userId}")
   public ResponseEntity<MentorResponse> createMentorFromUser(@PathVariable String userId) {
@@ -62,33 +71,41 @@ public class MentorController {
   }
 
   @GetMapping("/edition/{editionId}")
-  public ResponseEntity<List<MentorResponse>> findAllMentors(@PathVariable String editionId) {
+  public ResponseEntity<List<MentorEditionResponse>> findAllMentors(@PathVariable String editionId) {
     Long ed_id = Long.parseLong(editionId);
-    List<Mentor> mentors = mentorService.findByEditionId(ed_id);
-    return new ResponseEntity<>(converter.convertMentorToDto(mentors), HttpStatus.OK);
+    List<MentorEdition> mentors = mentorService.findMentorEditionByEditionId(ed_id);
+    return new ResponseEntity<>(converter.convertMentorEditionToMentorDto(mentors), HttpStatus.OK);
   }
-  @PutMapping("/edition/{editionId}/{mentorId}/status")
-  public ResponseEntity<MentorEditionResponse> updateMentorStatus(
-    @PathVariable String editionId, @PathVariable String mentorId, @RequestBody GeneralStatus status) {
+  @PostMapping("/edition/{editionId}/{mentorId}")
+  public ResponseEntity<MentorEditionResponse> createMentorStatus(
+    @PathVariable String editionId, @PathVariable String mentorId, @RequestBody MentorEditionRequest status) {
     Long ed_id = Long.parseLong(editionId);
     Long mid = Long.parseLong(mentorId);
-    MentorEdition mentor = mentorService.updateStatus(ed_id, mid, status);
+    MentorEdition mentor = mentorService.createMentorEdition(mid, ed_id, status);
+    return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.CREATED);
+  }
+  @PutMapping("/edition/{editionId}/{mentorId}")
+  public ResponseEntity<MentorEditionResponse> updateMentorStatus(
+    @PathVariable String editionId, @PathVariable String mentorId, @RequestBody MentorEditionRequest status) {
+    Long ed_id = Long.parseLong(editionId);
+    Long mid = Long.parseLong(mentorId);
+    MentorEdition mentor = mentorService.updateMentorEdition(mid, ed_id, status);
     return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
   }
 
-  @PostMapping("areas/{mentorId}/mentorArea")
+  @PostMapping("/areas/{mentorId}")
   public ResponseEntity<List<MentorAreaResponse>> createMentorArea(
     @RequestBody MentorAreaRequest request, @PathVariable String mentorId) {
-    List<MentorArea> mentorAreas = mentorService.saveMentorAreas(Long.parseLong(mentorId), request);
+    List<MentorArea> mentorAreas = mentorService.createMentorAreas(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorAreaToDto(mentorAreas), HttpStatus.OK);
   }
-  @PutMapping("areas/{mentorId}/mentorArea")
+  @PutMapping("/areas/{mentorId}")
   public ResponseEntity<List<MentorAreaResponse>> updateMentorArea(
     @RequestBody MentorAreaRequest request, @PathVariable String mentorId) {
-    List<MentorArea> mentorAreas = mentorService.saveMentorAreas(Long.parseLong(mentorId), request);
+    List<MentorArea> mentorAreas = mentorService.updateMentorAreas(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorAreaToDto(mentorAreas), HttpStatus.OK);
   }
-
+  
   @GetMapping("/availability/{editionId}/{mentorId}")
   public ResponseEntity<List<MentorAvailabilityResponse>> findMentorAvailability(
       @PathVariable String editionId, @PathVariable String mentorId) {
@@ -97,29 +114,26 @@ public class MentorController {
       );
     return new ResponseEntity<>(converter.convertMentorAvailabilityToDto(availabilities), HttpStatus.OK);
   }
-  @PostMapping("/availability/{editionId}/{mentorId}/availabilities")
+  @PostMapping("/availability")
   public ResponseEntity<List<MentorAvailabilityResponse>> createMentorAvailability(
-      @RequestBody MentorAvailabilitiesRequest request,
-      @PathVariable String editionId,
-      @PathVariable String mentorId) {
-    List<MentorAvailability> availability = mentorService.saveMentorAvailability(
-        Long.parseLong(editionId), Long.parseLong(mentorId), request
-      );
+      @RequestBody MentorAvailabilitiesRequest request) {
+    List<MentorAvailability> availability = mentorService.saveMentorAvailability(request);
     return new ResponseEntity<>(converter.convertMentorAvailabilityToDto(availability), HttpStatus.CREATED);
+  }
+  @PutMapping("/availability") //{editionId}/{mentorId}
+  public ResponseEntity<List<MentorAvailabilityResponse>> updateMentorAvailability(
+    @RequestBody MentorAvailabilitiesRequest request) {
+    List<MentorAvailability> availability = mentorService.saveMentorAvailability(request);
+    return new ResponseEntity<>(converter.convertMentorAvailabilityToDto(availability), HttpStatus.OK);
   }
   @DeleteMapping("/availability/{availabilityId}")
   public ResponseEntity<Void> deleteMentorAvailability(@PathVariable String availabilityId) {
     mentorService.deleteMentorAvailability(Long.parseLong(availabilityId));
     return null;
   }
-  @PutMapping("/availability/{editionId}/{mentorId}")
-  public ResponseEntity<List<MentorAvailabilityResponse>> updateMentorAvailability(
-    @RequestBody MentorAvailabilitiesRequest request,
-    @PathVariable String editionId,
-    @PathVariable String mentorId) {
-  List<MentorAvailability> availability = mentorService.saveMentorAvailability(
-      Long.parseLong(editionId), Long.parseLong(mentorId), request
-    );
-    return new ResponseEntity<>(converter.convertMentorAvailabilityToDto(availability), HttpStatus.OK);
+  @DeleteMapping("/availability")
+  public ResponseEntity<Void> deleteMentorAvailabilities(@RequestBody List<Long> request) {
+    mentorService.deleteMentorAvailabilities(request);
+    return null;
   }
 }

@@ -5,8 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lgj.webapp.CompositeKeys.MentorEditionKey;
 import com.lgj.webapp.dto.MentorAreaRequest;
 import com.lgj.webapp.dto.MentorAvailabilitiesRequest;
+import com.lgj.webapp.dto.MentorEditionRequest;
+import com.lgj.webapp.dto.MentorRequest;
+import com.lgj.webapp.entities.Edition;
 import com.lgj.webapp.entities.Mentor;
 import com.lgj.webapp.entities.MentorArea;
 import com.lgj.webapp.entities.MentorAvailability;
@@ -19,7 +23,6 @@ import com.lgj.webapp.repository.MentorAvailabilityRepository;
 import com.lgj.webapp.repository.MentorEditionRepository;
 import com.lgj.webapp.repository.MentorRepository;
 import com.lgj.webapp.repository.UserRepository;
-import com.lgj.webapp.util.GeneralStatus;
 import com.lgj.webapp.util.RolSelection;
 
 import org.springframework.stereotype.Service;
@@ -63,6 +66,10 @@ public class MentorService {
   public List<Mentor> findByEditionId(Long editionId) {
     return mentorEditionRepository.findMentorByEditionId(editionId);
   }
+  @Transactional(readOnly = true)
+  public List<MentorEdition> findMentorEditionByEditionId(Long editionId) {
+    return mentorEditionRepository.findByEditionId(editionId);
+  }
 
   @Transactional(readOnly = true)
   public List<Mentor> findByPartOfFullName(String text) {
@@ -75,13 +82,41 @@ public class MentorService {
   // sino, lo vuelve mentor
   @Transactional
   public Mentor mentorFromUserId(Long userId) {
-    Mentor mentor = mentorRepository.getOne(userId);
-    if (mentor == null) {
-      User user = userRepository.getOne(userId);
-      // User user = userRepository.findById(userId);
-      mentor = Mentor.toBuilder(user).build();
+    // if(userRepository.existsById(userId)) {
+    //   mentorRepository.saveOnlyMentor("", userId);
+    // }
+    User user = userRepository.getOne(userId);
+    if ( user instanceof Mentor ) {
+      return mentorRepository.save((Mentor) user);
     }
-    return mentorRepository.save(mentor);
+    return null;
+    // Mentor mentor = mentorRepository.getOne(userId);
+    // if (mentor.equals(null)) {
+      // User user = userRepository.getOne(userId);
+
+      // Mentor mentor = Mentor.builder().build();
+      // Mentor mentor = Mentor.toBuilder(user).build();
+      // }
+    //   User user = userRepository.getOne(userId);
+    // if (!user.equals(null)) {
+    //   Mentor mentor = Mentor.builder()
+    //   .id(userId)
+    //   .apellidos(user.getApellidos())
+    //   .nombres(user.getNombres())
+    //   .email(user.getEmail())
+    //   .descripcion(user.getDescripcion())
+    //   .distrito(user.getDistrito())
+    //   .dni(user.getDni())
+    //   .nacimiento(user.getNacimiento())
+    //   .genero(user.getGenero())
+    //   .telefono(user.getTelefono())
+    //   .username(user.getUsername())
+    //   .password(user.getPassword())
+    //   .build();
+    //   return mentorRepository.save(mentor);
+    // }
+    
+    // return new Mentor();
   }
   
   @Transactional
@@ -111,13 +146,34 @@ public class MentorService {
   }
 
   @Transactional
-  public Mentor updateMentor(Long mentorId, Mentor mentor) {
-    mentor.setId(mentorId);
-    return mentorRepository.save(mentor);
+  public Mentor updateMentor(Long mentorId, MentorRequest mentor) {
+    Mentor mentorToUpdate = mentorRepository.getOne(mentorId);
+    if (mentor.getNombres() != null) {
+      mentorToUpdate.setNombres(mentor.getNombres());
+    }
+    if (mentor.getApellidos() != null) {
+      mentorToUpdate.setApellidos(mentor.getApellidos());
+    }
+    if (mentor.getPhone() != null) {
+      mentorToUpdate.setTelefono(mentor.getPhone());
+    }
+    if (mentor.getEmail() != null) {
+      mentorToUpdate.setEmail(mentor.getEmail());
+    }
+    if (mentor.getBirthdate() != null) {
+      mentorToUpdate.setNacimiento(mentor.getBirthdate());
+    }
+    if (mentor.getUrlPhoto() != null) {
+      mentorToUpdate.setUrlPhoto(mentor.getUrlPhoto());
+    }
+    if (mentor.getAreas() != null) {
+      mentorToUpdate.setAreas(mentor.getAreas());
+    }
+    return mentorRepository.save(mentorToUpdate);
   }
 
   @Transactional
-  public List<MentorArea> saveMentorAreas(Long mentorId, MentorAreaRequest mentorArea) {
+  public List<MentorArea> createMentorAreas(Long mentorId, MentorAreaRequest mentorArea) {
     Mentor mentor = mentorRepository.getOne(mentorId);
     List<MentorArea> mentorAreas = mentorArea.getAreas()
       .stream()
@@ -126,11 +182,29 @@ public class MentorService {
         .area(areaRespository.getOne(area.getAreaId()))
         .mentor(mentor)
         .yearsOfExperience(area.getYearsOfExperience())
-        .priority(area.getYearsOfExperience())
+        .priority(area.getPriority())
         .build()
       )
       .collect(Collectors.toList());
-
+    
+    return mentorAreaRepository.saveAll(mentorAreas);
+  }
+  @Transactional
+  public List<MentorArea> updateMentorAreas(Long mentorId, MentorAreaRequest mentorArea) {
+    List<MentorArea> mentorAreas = mentorArea.getAreas()
+      .stream()
+      .map(area ->
+        {
+          MentorArea marea = mentorAreaRepository.getOneByMentorIdAndAreaId(mentorId, area.getAreaId());
+          if (marea != null) {
+            marea.setYearsOfExperience(area.getYearsOfExperience());
+            marea.setPriority(area.getPriority());
+          }
+          return marea;
+        }
+      )
+      .collect(Collectors.toList());
+    
     return mentorAreaRepository.saveAll(mentorAreas);
   }
 
@@ -142,15 +216,13 @@ public class MentorService {
 
   @Transactional
   public List<MentorAvailability> saveMentorAvailability(
-    Long editionId, Long mentorId,
     MentorAvailabilitiesRequest maRequest) {
-    MentorEdition mentorEdition = (MentorEdition) mentorEditionRepository
-        .getOneByMentorIdAndEditionId(mentorId, editionId);
+    MentorEdition mentorEdition = mentorEditionRepository
+        .getOneByMentorIdAndEditionId(maRequest.getMentorId(), maRequest.getEditionId());
     List<MentorAvailability> mentorAvailabilities = maRequest.getAvailabilities()
       .stream()
       .map(availability ->
         MentorAvailability.builder()
-        .id(availability.getMentorAvailabilityId())
         .mentorEdition(mentorEdition)
         .dateStart(availability.getDateStart())
         .dateEnd(availability.getDateEnd())
@@ -165,25 +237,34 @@ public class MentorService {
   public void deleteMentorAvailability(Long mentorAvailabilityId) {
     mentorAvailabilityRepository.deleteById(mentorAvailabilityId);
   }
-  
-  
   @Transactional
-  public void saveMentorEdition(Long mentorId, Long editionId) {
-    Mentor mentor = mentorRepository.getOne(mentorId);
-    MentorEdition mentorEdition = MentorEdition.builder()
-      .mentor(mentor)
-      .edition(editionRepository.getOne(editionId))
-      .status(GeneralStatus.EN_CONSULTA)
-      .build();
-    mentorEditionRepository.save(mentorEdition);
+  public void deleteMentorAvailabilities(List<Long> mentorAvailabilitiesId) {
+    mentorAvailabilityRepository.deleteAllById(mentorAvailabilitiesId);
   }
   
+  
+  @Transactional(readOnly = true)
+  public MentorEdition findByIdAndEditionId(Long mentorId, Long editionId) {
+    return mentorEditionRepository.getOneByMentorIdAndEditionId(mentorId, editionId);
+  }
+
   @Transactional
-  public MentorEdition updateStatus(
-    Long mentorId, Long editionId, GeneralStatus status) {
-    MentorEdition mentorEdition = mentorEditionRepository
-          .getOneByMentorIdAndEditionId(mentorId, editionId);
-    mentorEdition.setStatus(status);
+  public MentorEdition createMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
+    Mentor mentor = mentorRepository.getOne(mentorId);
+    Edition edition = editionRepository.getOne(editionId);
+    MentorEditionKey mentorEditionKey = new MentorEditionKey(mentorId, editionId);
+    MentorEdition mentorEdition = MentorEdition.builder()
+      .id(mentorEditionKey)
+      .mentor(mentor)
+      .edition(edition)
+      .status(status.getStatus())
+      .build();
+    return mentorEditionRepository.save(mentorEdition);
+  }
+  @Transactional
+  public MentorEdition updateMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
+    MentorEdition mentorEdition =  mentorEditionRepository.getOneByMentorIdAndEditionId(mentorId, editionId);
+    mentorEdition.setStatus(status.getStatus());
     return mentorEditionRepository.save(mentorEdition);
   }
 

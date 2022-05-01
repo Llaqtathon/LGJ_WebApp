@@ -12,6 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import com.lgj.webapp.CompositeKeys.MentorAreaKey;
+import com.lgj.webapp.util.AreaPriority;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,8 @@ import lombok.NoArgsConstructor;
 public class MentorArea {
   @EmbeddedId
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  MentorAreaKey id;
+  @Builder.Default
+  MentorAreaKey id = new MentorAreaKey();
 
   @ManyToOne(cascade = CascadeType.ALL)
   @MapsId("mentorId")
@@ -43,6 +45,6 @@ public class MentorArea {
   private Integer yearsOfExperience;
 
   @Column(name = "priority")
-  private Integer priority;
+  private AreaPriority priority;
   
 }

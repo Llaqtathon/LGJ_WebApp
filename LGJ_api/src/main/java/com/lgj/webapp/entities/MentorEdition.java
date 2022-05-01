@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import com.lgj.webapp.CompositeKeys.MentorEditionKey;
 import com.lgj.webapp.util.GeneralStatus;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,5 +57,6 @@ public class MentorEdition {
 
   
   @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mentorEdition")
+  @Fetch(value = FetchMode.SUBSELECT )
   private List<MentorAvailability> availabilities;
 }
