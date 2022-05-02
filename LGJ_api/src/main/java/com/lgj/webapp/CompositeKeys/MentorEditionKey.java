@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-// import javax.persistence.Entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-// @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class MentorEditionKey implements Serializable {
 

@@ -18,13 +18,18 @@ import javax.persistence.Table;
 import com.lgj.webapp.CompositeKeys.MentorEditionKey;
 import com.lgj.webapp.util.GeneralStatus;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Table(name = "mentor_edition")
 @Entity
 public class MentorEdition {
@@ -52,5 +57,6 @@ public class MentorEdition {
 
   
   @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mentorEdition")
+  @Fetch(value = FetchMode.SUBSELECT )
   private List<MentorAvailability> availabilities;
 }

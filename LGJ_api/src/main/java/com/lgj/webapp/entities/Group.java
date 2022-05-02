@@ -1,23 +1,13 @@
 package com.lgj.webapp.entities;
 
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.util.stream.Collectors;
 
 import com.lgj.webapp.dto.GroupRequest;
-
-import javax.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,35 +19,49 @@ import lombok.Data;
 @Entity
 @Table(name = "groups")
 public class Group {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @Column(name = "name")
-  private String name;
-  @Column(name = "photo_url") //TODO: (bug) DOESN'T WORK! 
-  private String photoUrl;
-  
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToMany
-  @JoinTable(
-      name = "groups_users", 
-      joinColumns = @JoinColumn(name = "group_id"), 
-      inverseJoinColumns = @JoinColumn(name = "user_id"))
-  Set<User> users = Collections.emptySet();
+    @Column(name = "name")
+    private String name;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "game_id", referencedColumnName = "id")
-  private Game game;
+    @Column(name = "photo_url") //TODO: (bug) DOESN'T WORK!
+    private String photoUrl;
 
-  //TODO: Add relationship to Event
+    @ManyToMany
+    @JoinTable(
+            name = "groups_users",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    Set<User> users = Collections.emptySet();
 
-  public Group addUser(User user) {
-    users.add(user);
-    return this;
-  }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_id", referencedColumnName = "id")
+    private Game game;
 
-  public Group(GroupRequest groupRequest) {
-    this.name = groupRequest.getName();
-    this.photoUrl = groupRequest.getPhotoUrl();
-  }
+    @ManyToOne
+    @JoinColumn(name = "edition_id")
+    private Edition edition;
+
+    public Group(GroupRequest groupRequest) {
+        this.name = groupRequest.getName();
+        this.photoUrl = groupRequest.getPhotoUrl();
+    }
+
+    //TODO: Add relationship to Event
+
+    public Group addUser(User user) {
+        users.add(user);
+        return this;
+    }
+
+    public Group removeUser(Long userId) {
+        this.users = users
+                .stream()
+                .filter(user -> !user.getId().equals(userId))
+                .collect(Collectors.toSet());
+
+        return this;
+    }
 }

@@ -22,10 +22,11 @@ public class EntityDtoConverter {
   public OrderResponse convertEntityToDto(Order order) {
     return modelMapper.map(order, OrderResponse.class);
   }
-
   public List<OrderResponse> convertEntityToDto(List<Order> orders) {
     return orders.stream()
       .map(order -> convertEntityToDto(order))
       .collect(Collectors.toList());
   }
+
+
 }

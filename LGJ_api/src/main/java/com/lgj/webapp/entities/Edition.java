@@ -15,11 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Edicion")
+@Table(name = "edicion")
 public class Edition {
   @Id
   @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -28,6 +32,10 @@ public class Edition {
   private String name;
   @Column (name = "description", nullable = true)
   private String description;
+  @Column (name = "date_start_preproduction", nullable = true)
+  private Date dateStartPreproduction;
+  @Column (name = "date_end_postproduction", nullable = true)
+  private Date dateEndPostproduction;
   @Column (name = "date_start", nullable = true)
   private Date dateStart;
   @Column (name = "date_end", nullable = true)
@@ -43,8 +51,18 @@ public class Edition {
   private String location;
   @Column (name = "location_url_gmaps", nullable = true)
   private String locationUrlGmaps;
-
-  
+  @OneToMany(mappedBy = "edition")
+  @JsonIgnore // TODO: Create Edition Response DTO and remove JsonIgnore
+  private List<Group> groups;
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "edition")
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<MentorEdition> mentors;
+
+  public Edition addGroup(Group group) {
+    groups.add(group);
+    return this;
+  }
+  @OneToMany(fetch=FetchType.LAZY, mappedBy = "edition", orphanRemoval = true)
+  // @Fetch(value = FetchMode.SUBSELECT)
+  private List<MicroEvento> microeventos;
 }
