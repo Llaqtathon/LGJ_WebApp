@@ -1,5 +1,9 @@
 package com.lgj.webapp.services;
 
+
+import java.util.List;
+
+
 // import java.time.Duration;
 import java.util.List;
 
@@ -9,14 +13,19 @@ import com.lgj.webapp.dto.MicroEventoAsigRequest;
 import com.lgj.webapp.dto.MicroevntRequest;
 import com.lgj.webapp.entities.Edition;
 // import com.lgj.webapp.dto.MicroEventoOrgResponse;
+
 import com.lgj.webapp.entities.MicroEvento;
 import com.lgj.webapp.entities.UserMicroE;
 import com.lgj.webapp.repository.EditionRepository;
 import com.lgj.webapp.repository.MicroeventoRepository;
+
+import com.lgj.webapp.util.GeneralStatus;
+
 import com.lgj.webapp.repository.MicroeventoUserRespository;
 import com.lgj.webapp.repository.UserRepository;
 // import com.lgj.webapp.util.GeneralStatus;
 // import com.lgj.webapp.util.TipoMicroEvento;
+
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,6 +132,17 @@ public class MicroeventoService {
     public MicroEvento updatemicroevento(MicroEvento micro) {
         return microRepository.save(micro);
     }
+
+
+    public List<MicroEvento> findAll(){
+        return microRepository.findAll();
+    }
+
+    public List<MicroEvento> findAllMicroeventoStatusPendiente(GeneralStatus status){
+
+        return microRepository.findMicroEventoByStatus(status);
+    }
+
     @Transactional
     public void deletemicroevento(Long id) {
         microRepository.deleteById(id);

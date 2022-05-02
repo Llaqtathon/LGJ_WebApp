@@ -2,7 +2,9 @@ package com.lgj.webapp.entities;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 // import java.util.Set;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +70,13 @@ public class MicroEvento {
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "microevento")
     // @Fetch(value = FetchMode.SUBSELECT)
     private List<UserMicroE> users;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private GeneralStatus status;
+
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "microevento")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<EnlaceStreaming> enlaces;
+
 }

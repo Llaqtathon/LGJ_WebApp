@@ -2,6 +2,7 @@ package com.lgj.webapp.controllers;
 
 import java.util.List;
 
+
 import com.lgj.webapp.dto.MicroEventoAsigRequest;
 import com.lgj.webapp.dto.MicroEventoOrgResponse;
 import com.lgj.webapp.dto.MicroevntRequest;
@@ -9,7 +10,11 @@ import com.lgj.webapp.dto.UserOrgShort;
 import com.lgj.webapp.entities.MicroEvento;
 import com.lgj.webapp.entities.UserMicroE;
 import com.lgj.webapp.services.MicroeventoService;
+
+import com.lgj.webapp.util.GeneralStatus;
+
 import com.lgj.webapp.util.MicroeventDtoConverter;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/micro")
@@ -67,6 +75,20 @@ public class MicroeventoController {
             converter.convertMicroevntToDto(microeventoService.getmicroeventoById(id)), HttpStatus.OK);
     }
 
+
+    @GetMapping("/all")
+    public ResponseEntity<List<MicroEvento>> FindAll() {
+        List<MicroEvento> micro = microeventoService.findAll();
+        return new ResponseEntity<>(micro, HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<MicroEvento>> findAllMicroeventoStatusPendiente(@PathVariable GeneralStatus status) {
+        List<MicroEvento> micro = microeventoService.findAllMicroeventoStatusPendiente(status);
+        return new ResponseEntity<>(micro, HttpStatus.OK);
+    }
+    
+
     // @PostMapping
     // public ResponseEntity<MicroEventoOrgResponse> createMicroEvent(
     //     @RequestBody MicroEventoAsigRequest request) {
@@ -92,5 +114,4 @@ public class MicroeventoController {
         List<UserMicroE> microEvento = microeventoService.getAsignadosByMicroeventoId(microeventId);
         return new ResponseEntity<>(converter.convertMicroevntAsignToDto(microEvento), HttpStatus.OK);
     }
-
 }
