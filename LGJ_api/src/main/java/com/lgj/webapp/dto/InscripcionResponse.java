@@ -1,7 +1,6 @@
 package com.lgj.webapp.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.util.GeneralStatus;

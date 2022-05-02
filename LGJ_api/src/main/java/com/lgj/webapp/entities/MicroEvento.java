@@ -2,7 +2,6 @@ package com.lgj.webapp.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.lgj.webapp.util.GeneralStatus;
 import com.lgj.webapp.util.TipoMicroEvento;
 
 import lombok.AllArgsConstructor;
@@ -50,4 +50,7 @@ public class MicroEvento {
     private List<Cronograma> cronograma;
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "microevento")
     private List<UserMicroE> users;
+    @Column(name = "status", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private GeneralStatus status;
 }

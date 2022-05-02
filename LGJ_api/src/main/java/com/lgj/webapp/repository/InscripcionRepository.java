@@ -1,15 +1,12 @@
 package com.lgj.webapp.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.lgj.webapp.entities.Inscripcion;
 import com.lgj.webapp.util.GeneralStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Long>{
     

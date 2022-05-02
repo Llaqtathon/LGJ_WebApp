@@ -1,7 +1,5 @@
 package com.lgj.webapp.controllers;
 
-import java.util.List;
-
 import com.lgj.webapp.dto.GroupRequest;
 import com.lgj.webapp.entities.Group;
 import com.lgj.webapp.services.GroupService;
