@@ -71,10 +71,6 @@ public class MicroEvento {
     // @Fetch(value = FetchMode.SUBSELECT)
     private List<UserMicroE> users;
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private GeneralStatus status;
-
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "microevento")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<EnlaceStreaming> enlaces;
