@@ -2,7 +2,7 @@ package com.lgj.webapp.services;
 
 import org.springframework.stereotype.Service;
 import com.lgj.webapp.repository.PostsRepository;
-import com.lgj.webapp.entities.Publicacion;
+import com.lgj.webapp.entities.Post;
 
 @Service
 public class PostService {

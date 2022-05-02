@@ -6,11 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import com.lgj.webapp.entities.Game;
 
 @Data
 @Entity
-@Table(name = "Proyecto")
+@Table(name = "proyectos")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Proyecto {

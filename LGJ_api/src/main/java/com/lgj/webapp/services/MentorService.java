@@ -2,6 +2,7 @@ package com.lgj.webapp.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,13 +126,13 @@ public class MentorService {
     //nombres, apellidos, url_photo, areas
     //si vacio poner valores por defecto
     String defaultUsername = mentor.getNombres().substring(4) + "." + mentor.getApellidos().substring(4);
-    mentor.setRol(RolSelection.Mentor);
+    mentor.setRol(RolSelection.MENTOR);
     mentor.setDni("88888888");
     if (mentor.getTelefono() == null) {
       mentor.setTelefono("99999999");
     }
     if (mentor.getNacimiento() == null) {
-      mentor.setNacimiento(new SimpleDateFormat("yyyy/MM/dd").parse("1990/01/01") );
+      mentor.setNacimiento( LocalDate.of(1990, 1, 1) );
     }
     if (mentor.getEmail() == null) {
       mentor.setEmail(defaultUsername + "@confirmar.com");

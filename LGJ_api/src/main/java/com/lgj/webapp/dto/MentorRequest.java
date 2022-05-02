@@ -1,6 +1,5 @@
 package com.lgj.webapp.dto;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -9,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.lgj.webapp.entities.MentorArea;
 
 import lombok.Data;
+import java.time.LocalDate;
 
 @Data
 public class MentorRequest {
@@ -21,7 +21,7 @@ public class MentorRequest {
   private String urlPhoto;
   private String phone;
   private String email;
-  private Date birthdate;
+  private LocalDate birthdate;
   // @NotNull
   // List<MentorAreaResponse> areas;
   private List<MentorArea> areas;

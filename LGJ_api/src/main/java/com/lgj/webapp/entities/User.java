@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,6 +25,7 @@ import com.lgj.webapp.util.GenderSelection;
 import com.lgj.webapp.util.RolSelection;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,7 +35,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 // @Builder
 @SuperBuilder(toBuilder = true)
-@Table(name = "Users")
+@Table(name = "users")
 public class User{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,6 +69,8 @@ public class User{
   @Column(name = "rol")
   @Enumerated(value = EnumType.STRING)
   private RolSelection rol;
+  @ManyToMany(mappedBy = "users")
+    List<Group> groups;
 
   public abstract static class UserBuilder<C extends User, B extends User.UserBuilder<C, B>> {
     protected B $fillValuesFromUser(User instance) {

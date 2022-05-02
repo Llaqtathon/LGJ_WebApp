@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sponsor")
 
 public class SponsorController {
+
     private SponsorService sponsorService;
 
     public SponsorController(SponsorService sponsorService){ this.sponsorService=sponsorService;}
 
     @PostMapping
     public ResponseEntity<Sponsor> createEdition(@RequestBody Sponsor request){
-        return new ResponseEntity<Sponsor>(sponsorService.createEdition(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(sponsorService.createSponsor(request), HttpStatus.CREATED);
     }
 }

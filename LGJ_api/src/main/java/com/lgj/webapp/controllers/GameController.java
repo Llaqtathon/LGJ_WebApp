@@ -22,25 +22,29 @@ import org.springframework.http.HttpStatus;
 @RequestMapping("/games")
 @RequiredArgsConstructor
 public class GameController {
-    
-private final GameService gameService;
 
- @GetMapping
-  public ResponseEntity<List<Game>> findAllGames() {
-    List<Game> games = gameService.getAll();
-    return new ResponseEntity<>(games, HttpStatus.OK);
-  }
-  
-  @GetMapping("/{gameId}")
-  public ResponseEntity<Game> findGameById(@PathVariable Long gameId) {
-    Game game = gameService.getById(gameId);
-    return new ResponseEntity<>(game, HttpStatus.OK);
-  }
+    private final GameService gameService;
 
-  @PostMapping
-  public ResponseEntity<Game> createGame(@RequestBody GameRequest request) {
-    Game game = gameService.createGame(request);
-    return new ResponseEntity<>(game, HttpStatus.CREATED);
-  }
-    
+    @GetMapping
+    public ResponseEntity<List<Game>> findAllGames() {
+        List<Game> games = gameService.getAll();
+        return new ResponseEntity<>(games, HttpStatus.OK);
+    }
+
+    @GetMapping("/{gameId}")
+    public ResponseEntity<Game> findGameById(@PathVariable Long gameId) {
+        Game game = gameService.getById(gameId);
+        return new ResponseEntity<>(game, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Game> createGame(@RequestBody GameRequest request) {
+        Game game = gameService.createGame(request);
+        return new ResponseEntity<>(game, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Game>> findAllByUserId(@PathVariable Long userId) {
+        return new ResponseEntity<>(gameService.getAllByUserId(userId), HttpStatus.OK);
+    }
 }

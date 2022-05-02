@@ -1,9 +1,9 @@
 package com.lgj.webapp.repository;
 
-import com.lgj.webapp.entities.Publicacion;
+import com.lgj.webapp.entities.Post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface PostsRepository extends JpaRepository<Publicacion, Long>{
+public interface PostsRepository extends JpaRepository<Post, Long>{
 }

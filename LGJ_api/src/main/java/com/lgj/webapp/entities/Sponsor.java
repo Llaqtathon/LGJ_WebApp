@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "Sponsor")
+@Table(name = "sponsors")
 public class Sponsor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

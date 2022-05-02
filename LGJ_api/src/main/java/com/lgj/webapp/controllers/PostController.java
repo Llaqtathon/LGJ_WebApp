@@ -7,16 +7,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lgj.webapp.entities.Publicacion;
+import com.lgj.webapp.entities.Post;
 import com.lgj.webapp.services.PostService;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
+
     private PostService postService;
-    public PostController(PostService postService){this.postService=postService;}
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
     @PostMapping
-    public ResponseEntity<Publicacion> createPost(@RequestBody Publicacion request){
-        return new ResponseEntity<Publicacion>(PostService.createPost(request));
+    public ResponseEntity<Post> createPost(@RequestBody Post request) {
+        return new ResponseEntity<>(postService.createPost(request), HttpStatus.CREATED);
     }
 }

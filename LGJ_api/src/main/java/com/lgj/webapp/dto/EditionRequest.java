@@ -2,8 +2,8 @@ package com.lgj.webapp.dto;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
-import com.lgj.webapp.entities.Edition;
 
+import com.lgj.webapp.entities.MentorEdition;
 import lombok.Data;
 
 @Data

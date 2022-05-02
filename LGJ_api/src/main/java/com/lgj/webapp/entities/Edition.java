@@ -15,11 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Edicion")
+@Table(name = "edicion")
 public class Edition {
   @Id
   @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -47,8 +49,14 @@ public class Edition {
   private String location;
   @Column (name = "location_url_gmaps", nullable = true)
   private String locationUrlGmaps;
-
-  
+  @OneToMany(mappedBy = "edition")
+  @JsonIgnore // TODO: Create Edition Response DTO and remove JsonIgnore
+  private List<Group> groups;
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "edition")
   private List<MentorEdition> mentors;
+
+  public Edition addGroup(Group group) {
+    groups.add(group);
+    return this;
+  }
 }
