@@ -5,6 +5,7 @@ import java.util.List;
 import com.lgj.webapp.entities.Mentor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,9 +20,10 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
   @Query(value = query_mentor_names, nativeQuery = true)
   List<Mentor> findByNamesOrLastNames(@Param("names") String names);
 
-  String query_new_mentor = "INSERT INTO mentor (url_photo, mentor_id) VALUES (?1, ?2)";
-  @Query(value = query_new_mentor, nativeQuery = true)
-  Void saveOnlyMentor(String urlPhoto, Long mentorId);
+  @Modifying
+  @Query(value = "INSERT INTO mentor (url_photo, mentor_id) VALUES (:url_photo, :mentor_id)",
+        nativeQuery = true)
+  Integer saveOnlyMentor(@Param("url_photo") String urlPhoto, @Param("mentor_id") Long mentorId);
 
   //agregar horario de disponibilidad
 

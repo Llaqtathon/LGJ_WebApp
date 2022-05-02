@@ -19,6 +19,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lgj.webapp.util.GenderSelection;
@@ -26,6 +27,7 @@ import com.lgj.webapp.util.RolSelection;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -40,7 +42,7 @@ public class User{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "username", nullable = false)
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
   @Column(name = "password", nullable = false)
   private String password;
@@ -48,7 +50,7 @@ public class User{
   private String nombres;
   @Column(name = "apellidos", nullable = false)
   private String apellidos;
-  @Column(name= "email", nullable = false)
+  @Column(name= "email", nullable = false, unique = true)
   private String email;
   @Column(name= "nacimiento", nullable = false)
   private LocalDate nacimiento;
@@ -78,4 +80,6 @@ public class User{
         return self();
     }
   }
+  @OneToMany(mappedBy = "user")
+  private Set<UserMicroE> interesado;
 }

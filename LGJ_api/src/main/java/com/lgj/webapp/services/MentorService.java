@@ -2,6 +2,7 @@ package com.lgj.webapp.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+// import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,14 +17,14 @@ import com.lgj.webapp.entities.Mentor;
 import com.lgj.webapp.entities.MentorArea;
 import com.lgj.webapp.entities.MentorAvailability;
 import com.lgj.webapp.entities.MentorEdition;
-import com.lgj.webapp.entities.User;
+// import com.lgj.webapp.entities.User;
 import com.lgj.webapp.repository.AreaRespository;
 import com.lgj.webapp.repository.EditionRepository;
 import com.lgj.webapp.repository.MentorAreaRepository;
 import com.lgj.webapp.repository.MentorAvailabilityRepository;
 import com.lgj.webapp.repository.MentorEditionRepository;
 import com.lgj.webapp.repository.MentorRepository;
-import com.lgj.webapp.repository.UserRepository;
+// import com.lgj.webapp.repository.UserRepository;
 import com.lgj.webapp.util.RolSelection;
 
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MentorService {
   
-  private UserRepository userRepository;
+  // private UserRepository userRepository;
   private EditionRepository editionRepository;
   private AreaRespository areaRespository;
   private MentorRepository mentorRepository;
@@ -43,7 +44,7 @@ public class MentorService {
   public MentorService(
     MentorRepository mentorRepository,
     EditionRepository editionRepository,
-    UserRepository userRepository,
+    // UserRepository userRepository,
     MentorAreaRepository mentorAreaRepository,
     MentorAvailabilityRepository mentorAvailabilityRepository,
     MentorEditionRepository mentorEditionRepository,
@@ -54,7 +55,7 @@ public class MentorService {
     this.mentorAreaRepository = mentorAreaRepository;
     this.mentorAvailabilityRepository = mentorAvailabilityRepository;
     this.mentorEditionRepository = mentorEditionRepository;
-    this.userRepository = userRepository;
+    // this.userRepository = userRepository;
     this.areaRespository = areaRespository;
   }
   
@@ -82,43 +83,20 @@ public class MentorService {
   // si existe el id seleccionado en mentor, entonces solo lo selecciona
   // sino, lo vuelve mentor
   @Transactional
-  public Mentor mentorFromUserId(Long userId) {
-    // if(userRepository.existsById(userId)) {
-    //   mentorRepository.saveOnlyMentor("", userId);
-    // }
-    User user = userRepository.getOne(userId);
-    if ( user instanceof Mentor ) {
-      return mentorRepository.save((Mentor) user);
-    }
-    return null;
-    // Mentor mentor = mentorRepository.getOne(userId);
-    // if (mentor.equals(null)) {
-      // User user = userRepository.getOne(userId);
-
-      // Mentor mentor = Mentor.builder().build();
-      // Mentor mentor = Mentor.toBuilder(user).build();
-      // }
-    //   User user = userRepository.getOne(userId);
-    // if (!user.equals(null)) {
-    //   Mentor mentor = Mentor.builder()
-    //   .id(userId)
-    //   .apellidos(user.getApellidos())
-    //   .nombres(user.getNombres())
-    //   .email(user.getEmail())
-    //   .descripcion(user.getDescripcion())
-    //   .distrito(user.getDistrito())
-    //   .dni(user.getDni())
-    //   .nacimiento(user.getNacimiento())
-    //   .genero(user.getGenero())
-    //   .telefono(user.getTelefono())
-    //   .username(user.getUsername())
-    //   .password(user.getPassword())
-    //   .build();
-    //   return mentorRepository.save(mentor);
-    // }
-    
-    // return new Mentor();
+  private Integer mentorFromUserId(Long userId) {
+    return mentorRepository.saveOnlyMentor("",userId);
   }
+  @Transactional
+  public Mentor setMentorFromUser(Long userId) {
+    Integer mentorId = mentorFromUserId(userId);
+    if (mentorId == 0) {
+      return null;
+    }
+    Mentor mentor = mentorRepository.getOne(userId);
+    mentor.setRol(RolSelection.MENTOR);
+    return mentor;
+  }
+
   
   @Transactional
   //crear mentor que no era participante:
@@ -132,7 +110,7 @@ public class MentorService {
       mentor.setTelefono("99999999");
     }
     if (mentor.getNacimiento() == null) {
-      mentor.setNacimiento( LocalDate.of(1990, 1, 1) );
+      mentor.setNacimiento(LocalDate.parse("1990-01-01") );
     }
     if (mentor.getEmail() == null) {
       mentor.setEmail(defaultUsername + "@confirmar.com");
@@ -250,22 +228,23 @@ public class MentorService {
   }
 
   @Transactional
-  public MentorEdition createMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
-    Mentor mentor = mentorRepository.getOne(mentorId);
+  public MentorEdition createMentorEdition(Long editionId, MentorEditionRequest request) {
+    Mentor mentor = mentorRepository.getOne(request.getMentorId());
     Edition edition = editionRepository.getOne(editionId);
-    MentorEditionKey mentorEditionKey = new MentorEditionKey(mentorId, editionId);
+    MentorEditionKey mentorEditionKey = new MentorEditionKey(request.getMentorId(), editionId);
     MentorEdition mentorEdition = MentorEdition.builder()
       .id(mentorEditionKey)
       .mentor(mentor)
       .edition(edition)
-      .status(status.getStatus())
+      .status(request.getStatus())
       .build();
     return mentorEditionRepository.save(mentorEdition);
   }
   @Transactional
-  public MentorEdition updateMentorEdition(Long mentorId, Long editionId, MentorEditionRequest status) {
-    MentorEdition mentorEdition =  mentorEditionRepository.getOneByMentorIdAndEditionId(mentorId, editionId);
-    mentorEdition.setStatus(status.getStatus());
+  public MentorEdition updateMentorEdition(Long editionId, MentorEditionRequest request) {
+    MentorEdition mentorEdition =  mentorEditionRepository.getOneByMentorIdAndEditionId(
+      request.getMentorId(), editionId);
+    mentorEdition.setStatus(request.getStatus());
     return mentorEditionRepository.save(mentorEdition);
   }
 

@@ -6,5 +6,6 @@ import lombok.Data;
 
 @Data
 public class MentorEditionRequest {
+  private Long mentorId;
   GeneralStatus status;
 }

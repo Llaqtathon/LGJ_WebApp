@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import lombok.Data;
 
@@ -53,10 +55,14 @@ public class Edition {
   @JsonIgnore // TODO: Create Edition Response DTO and remove JsonIgnore
   private List<Group> groups;
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "edition")
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<MentorEdition> mentors;
 
   public Edition addGroup(Group group) {
     groups.add(group);
     return this;
   }
+  @OneToMany(fetch=FetchType.LAZY, mappedBy = "edition", orphanRemoval = true)
+  // @Fetch(value = FetchMode.SUBSELECT)
+  private List<MicroEvento> microeventos;
 }

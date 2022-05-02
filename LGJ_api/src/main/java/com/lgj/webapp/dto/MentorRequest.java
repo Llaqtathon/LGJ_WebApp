@@ -1,5 +1,7 @@
 package com.lgj.webapp.dto;
 
+import java.time.LocalDate;
+// import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -8,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import com.lgj.webapp.entities.MentorArea;
 
 import lombok.Data;
-import java.time.LocalDate;
 
 @Data
 public class MentorRequest {
