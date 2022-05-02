@@ -1,6 +1,5 @@
 package com.lgj.webapp.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 // import java.util.Set;
@@ -15,11 +14,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lgj.webapp.util.GeneralStatus;
 import com.lgj.webapp.util.TipoMicroEvento;
+// import com.lgj.webapp.entities.Edition;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -40,6 +41,9 @@ public class MicroEvento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "edicion_id")
+    private Edition edition;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "nombre_ponente", nullable = true)
@@ -61,8 +65,8 @@ public class MicroEvento {
     @ManyToMany(mappedBy = "microeventos")
     private List<Cronograma> cronograma;
     
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "microevento")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "microevento")
+    // @Fetch(value = FetchMode.SUBSELECT)
     private List<UserMicroE> users;
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "microevento")
     @Fetch(value = FetchMode.SUBSELECT)

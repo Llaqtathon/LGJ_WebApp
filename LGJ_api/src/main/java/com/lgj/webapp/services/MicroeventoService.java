@@ -1,18 +1,22 @@
 package com.lgj.webapp.services;
 
-import java.time.Duration;
+// import java.time.Duration;
 import java.util.List;
 
-import com.lgj.webapp.CompositeKeys.UserMicroKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.lgj.webapp.CompositeKeys.UserMicroKey;
 import com.lgj.webapp.dto.MicroEventoAsigRequest;
-import com.lgj.webapp.dto.MicroEventoOrgResponse;
+import com.lgj.webapp.dto.MicroevntRequest;
+import com.lgj.webapp.entities.Edition;
+// import com.lgj.webapp.dto.MicroEventoOrgResponse;
 import com.lgj.webapp.entities.MicroEvento;
 import com.lgj.webapp.entities.UserMicroE;
+import com.lgj.webapp.repository.EditionRepository;
 import com.lgj.webapp.repository.MicroeventoRepository;
 import com.lgj.webapp.repository.MicroeventoUserRespository;
 import com.lgj.webapp.repository.UserRepository;
-import com.lgj.webapp.util.GeneralStatus;
-import com.lgj.webapp.util.TipoMicroEvento;
+// import com.lgj.webapp.util.GeneralStatus;
+// import com.lgj.webapp.util.TipoMicroEvento;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,21 +27,60 @@ public class MicroeventoService {
     private MicroeventoRepository microRepository;
     private MicroeventoUserRespository microUserRepository;
     private UserRepository userRepository;
+    private EditionRepository editionRepository;
 
     public MicroeventoService(
         MicroeventoRepository repository, 
         UserRepository userRepository,
+        EditionRepository editionRepository,
         MicroeventoUserRespository microUserRepository) {
         this.microRepository = repository;
         this.userRepository = userRepository;
         this.microUserRepository = microUserRepository;
+        this.editionRepository = editionRepository;
     }
 
     @Transactional
-    public MicroEvento createmicroevento(MicroEvento micro) {
-        return microRepository.save(micro);
+    public MicroEvento createmicroevento(MicroevntRequest micro) {
+        Edition edition = editionRepository.getOne(micro.getEditionId());
+        MicroEvento m = MicroEvento.builder()
+            .name(micro.getName())
+            .description(micro.getDescription())
+            .nombrePonente(micro.getNombrePonente())
+            .inicio(micro.getInicio())
+            .fin(micro.getFin())
+            .cupo(micro.getCupo())
+            .tipo(micro.getTipo())
+            .status(micro.getStatus())
+            .edition(edition)
+            .build();
+        return microRepository.save(m);
     }
-
+    @Transactional
+    public MicroEvento updatemicroevento(Long microEvntId, MicroevntRequest micro) {
+        MicroEvento m = microRepository.getOne(microEvntId);
+        m.setName(micro.getName());
+        m.setDescription(micro.getDescription());
+        m.setNombrePonente(micro.getNombrePonente());
+        m.setInicio(micro.getInicio());
+        m.setFin(micro.getFin());
+        m.setCupo(micro.getCupo());
+        m.setTipo(micro.getTipo());
+        m.setStatus(micro.getStatus());
+        return microRepository.save(m);
+    }
+    @Transactional(readOnly = true)
+    public List<UserMicroE> getmicroeventoByUserId(Long userId) {
+        return microUserRepository.findByUserId(userId);
+    }
+    @Transactional(readOnly = true)
+    public List<UserMicroE> getmicroeventoByMicroeventoId(Long microId) {
+        return microUserRepository.findByMicroeventoId(microId);
+    }
+    @Transactional(readOnly = true)
+    public List<MicroEvento> getmicroeventoByEditionId(Long editionId) {
+        return microRepository.findByEditionId(editionId);
+    }
     @Transactional(readOnly = true)
     public MicroEvento getmicroeventoById(Long id) {
         return microRepository.findById(id).get();
@@ -113,6 +156,14 @@ public class MicroeventoService {
             )
             .collect(java.util.stream.Collectors.toList());
         return microUserRepository.saveAll(asignados);
+    }
+    @Transactional (readOnly = true)
+    public List<UserMicroE> getAsignadosByMicroeventoId(Long microeventId) {
+        return microUserRepository.findByUserId(microeventId);
+    }
+    @Transactional (readOnly = true)
+    public List<UserMicroE> getMicroEventosByUserId(Long userId) {
+        return microUserRepository.findByUserId(userId);
     }
 
 }

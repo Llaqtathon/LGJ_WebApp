@@ -3,6 +3,7 @@ package com.lgj.webapp.repository;
 import java.util.List;
 // import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lgj.webapp.entities.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   List<User> findByNamesOrLastNames(@Param("names") String names);
   
   User findById(String userId);
+  @JsonIgnore
   User getOne(Long id);
 }

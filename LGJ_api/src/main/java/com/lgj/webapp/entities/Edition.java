@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.Data;
 
 @Data
@@ -50,5 +53,9 @@ public class Edition {
 
   
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "edition")
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<MentorEdition> mentors;
+  @OneToMany(fetch=FetchType.LAZY, mappedBy = "edition", orphanRemoval = true)
+  // @Fetch(value = FetchMode.SUBSELECT)
+  private List<MicroEvento> microeventos;
 }

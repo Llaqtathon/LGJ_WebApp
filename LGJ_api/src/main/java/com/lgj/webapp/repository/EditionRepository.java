@@ -2,6 +2,7 @@ package com.lgj.webapp.repository;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lgj.webapp.entities.Edition;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface EditionRepository extends JpaRepository<Edition, Long> {
   
   Edition findById(String editionId);
+  
+  @JsonIgnore
   Edition getOne(Long id);
 
   String query_current_event = "select * from edicion e"

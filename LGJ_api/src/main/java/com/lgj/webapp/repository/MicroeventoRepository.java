@@ -2,6 +2,7 @@ package com.lgj.webapp.repository;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lgj.webapp.dto.UserShortResponse;
 import com.lgj.webapp.entities.MicroEvento;
 
@@ -18,5 +19,13 @@ public interface MicroeventoRepository extends JpaRepository<MicroEvento, Long>{
   @Query(value = queryMicroeventoAsignados, nativeQuery = true)
   List<UserShortResponse> findAsignadosById(Long microEventoId);
 
+  
+  @JsonIgnore
   MicroEvento getOne(Long id);
+
+  // List<MicroEvento> findByTipo(TipoMicroEvento tipo);
+
+  // List<MicroEvento> findByStatus(GeneralStatus status);
+
+  List<MicroEvento> findByEditionId(Long editionId);
 }
