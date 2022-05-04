@@ -14,8 +14,8 @@ import com.lgj.webapp.util.RolSelection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="Posts")
-public class Publicacion {
+@Table(name="posts")
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

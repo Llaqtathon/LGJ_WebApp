@@ -28,6 +28,6 @@ public class Area {
   @Column(name = "name")
   private String name;
   
-  @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "area")
-  private List<MentorArea> mentors;
+  /*@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "area")
+  private List<MentorArea> mentors;*/
 }

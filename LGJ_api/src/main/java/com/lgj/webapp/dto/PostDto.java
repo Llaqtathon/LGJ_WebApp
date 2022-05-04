@@ -1,9 +1,6 @@
 package com.lgj.webapp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.lgj.webapp.entities.User;
-
-import java.sql.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

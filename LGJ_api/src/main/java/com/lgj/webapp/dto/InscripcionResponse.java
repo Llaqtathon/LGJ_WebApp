@@ -1,7 +1,6 @@
 package com.lgj.webapp.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.util.GeneralStatus;
@@ -14,6 +13,6 @@ public class InscripcionResponse {
     private LocalDateTime fecha;
     private String motivo;
     private GeneralStatus status;
-    List<UserDto> users;
+    private User users;
     //private  Edicion edicion_id;
 }

@@ -1,9 +1,11 @@
 package com.lgj.webapp.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+// import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,26 +17,32 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lgj.webapp.util.GenderSelection;
 import com.lgj.webapp.util.RolSelection;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
+@Getter
 @Inheritance (strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "Users")
+// @Builder
+@SuperBuilder(toBuilder = true)
+@Table(name = "users")
 public class User{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "username", nullable = false)
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
   @Column(name = "password", nullable = false)
   private String password;
@@ -42,7 +50,7 @@ public class User{
   private String nombres;
   @Column(name = "apellidos", nullable = false)
   private String apellidos;
-  @Column(name= "email", nullable = false)
+  @Column(name= "email", nullable = false, unique = true)
   private String email;
   @Column(name= "nacimiento", nullable = false)
   private LocalDate nacimiento;
@@ -63,5 +71,17 @@ public class User{
   @Column(name = "rol")
   @Enumerated(value = EnumType.STRING)
   private RolSelection rol;
+  @ManyToMany(mappedBy = "users")
+    List<Group> groups;
 
+  public abstract static class UserBuilder<C extends User, B extends User.UserBuilder<C, B>> {
+    protected B $fillValuesFromUser(User instance) {
+        $fillValuesFromInstanceIntoBuilder(instance, this);
+        return self();
+    }
+  }
+  @OneToMany(mappedBy = "user")
+  private Set<UserMicroE> interesado;
+
+  public String getUsername() {return username;}
 }

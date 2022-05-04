@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.*;
+
 
 import com.lgj.webapp.dto.GameRequest;
 
@@ -37,24 +38,25 @@ public class Game {
     private String urlIcht;
     @Column(name = "url_additional")
     private String urlAdditional;
-
     @Column(nullable = false)
     private String description;
-    
     @Column(name = "foto_url")
     private String fotoUrl;
-    
     @ManyToMany
     @JoinTable(
-        name = "games_platforms", 
-        joinColumns = @JoinColumn(name = "game_id"), 
-        inverseJoinColumns = @JoinColumn(name = "plarform_id"))
+            name = "games_platforms",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "plarform_id"))
     Set<Platform> platforms;
 
     /*@OneToOne(mappedBy = "group", cascade = CascadeType.ALL)
     private Group group;*/
 
-    public Game(GameRequest gameRequest){
+    @ManyToOne
+    @JoinColumn(name = "proyecto_id")
+    private Proyecto proyecto;
+
+    public Game(GameRequest gameRequest) {
         this.name = gameRequest.getName();
         this.urlGGJ = gameRequest.getUrlGGJ();
         this.urlIcht = gameRequest.getUrlIcht();
