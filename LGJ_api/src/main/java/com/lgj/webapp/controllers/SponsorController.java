@@ -23,21 +23,25 @@ public class SponsorController {
     @Autowired
     private SponsorService sponsorService;
 
+    public SponsorController(SponsorService sponsorService) {
+        this.sponsorService=sponsorService; 
+    }
     @GetMapping
     public ResponseEntity<List<Sponsor>> getAllSponsors(){
-        return ResponseEntity.ok(sponsorService.getAll());
+        List<Sponsor> sponsors = sponsorService.getAll();
+        return new ResponseEntity<>(sponsors, HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Sponsor> getSponsorById(@PathVariable Long id){
         Sponsor s = sponsorService.get(id);
         return s!=null ? ResponseEntity.ok(s) : new ResponseEntity<Sponsor>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Sponsor> saveSponsor(@RequestBody Sponsor sponsor){
         Sponsor s = sponsorService.save(sponsor);
         return s!=null && s.getId()!=null ? ResponseEntity.ok(s) : new ResponseEntity<Sponsor>(HttpStatus.NOT_MODIFIED);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Sponsor> updateSponsor(@PathVariable Long id, @RequestBody Sponsor sponsor){
         if(id!=null && sponsor.getId()!=null){
             Sponsor s = sponsorService.save(sponsor);
@@ -46,7 +50,7 @@ public class SponsorController {
             return new ResponseEntity<Sponsor>(HttpStatus.NOT_MODIFIED);
         }
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSponsor(@PathVariable Long id){
         if(id!=null && sponsorService.get(id)!=null){
             sponsorService.delete(id);
@@ -56,3 +60,4 @@ public class SponsorController {
         }
     }
 }
+

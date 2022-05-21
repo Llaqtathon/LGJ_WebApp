@@ -22,21 +22,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class HighlightController {
     @Autowired
     private HighlightService highlightService;
+    public HighlightController(HighlightService highlightService) {
+        this.highlightService = highlightService;
+    }
     @GetMapping
     public ResponseEntity<List<Highlight>> getAllHighlights(){
-        return ResponseEntity.ok(highlightService.getAll());
+        List<Highlight> highlights = highlightService.getAll();
+        return new ResponseEntity<>(highlights, HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Highlight> getHighlightById(@PathVariable Long id){
         Highlight s = highlightService.get(id);
         return s!=null ? ResponseEntity.ok(s) : new ResponseEntity<Highlight>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Highlight> saveHightlight(@RequestBody Highlight highlight){
         Highlight s = highlightService.save(highlight);
         return s!=null && s.getId()!=null ? ResponseEntity.ok(s) : new ResponseEntity<Highlight>(HttpStatus.NOT_MODIFIED);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Highlight> updateHighlight(@PathVariable Long id, @RequestBody Highlight highlight){
         if(id!=null && highlight.getId()!=null){
             Highlight s = highlightService.save(highlight);
@@ -45,7 +49,7 @@ public class HighlightController {
             return new ResponseEntity<Highlight>(HttpStatus.NOT_MODIFIED);
         }
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSponsor(@PathVariable Long id){
         if(id!=null && highlightService.get(id)!=null){
             highlightService.delete(id);
@@ -55,3 +59,4 @@ public class HighlightController {
         }
     }
 }
+

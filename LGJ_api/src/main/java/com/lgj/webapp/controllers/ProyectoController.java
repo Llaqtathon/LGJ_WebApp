@@ -16,27 +16,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/proyecto")
 public class ProyectoController {
     @Autowired
     private ProyectoServices proyectoService;
 
+    public ProyectoController(ProyectoServices proyectoService) {
+        this.proyectoService = proyectoService;
+    }
     @GetMapping
     public ResponseEntity<List<Proyecto>> getAllProyectos(){
-        return ResponseEntity.ok(proyectoService.getAll());
+        List<Proyecto> proyectos = proyectoService.getAll();
+        return new ResponseEntity<>(proyectos, HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Proyecto> getProyectoById(@PathVariable Long id){
         Proyecto p = proyectoService.get(id);
         return p!=null ? ResponseEntity.ok(p) : new ResponseEntity<Proyecto>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Proyecto> saveProyecto(@RequestBody Proyecto proyecto){
         Proyecto p = proyectoService.save(proyecto);
         return p!=null && p.getId()!=null ? ResponseEntity.ok(p) : new ResponseEntity<Proyecto>(HttpStatus.NOT_MODIFIED);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Proyecto> updateProyecto(@PathVariable Long id, @RequestBody Proyecto proyecto){
         if(id!=null && proyecto.getId()!=null){
             Proyecto p = proyectoService.save(proyecto);
@@ -45,7 +50,7 @@ public class ProyectoController {
             return new ResponseEntity<Proyecto>(HttpStatus.NOT_MODIFIED);
         }
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProyecto(@PathVariable Long id){
         if(id!=null && proyectoService.get(id)!=null){
             proyectoService.delete(id);

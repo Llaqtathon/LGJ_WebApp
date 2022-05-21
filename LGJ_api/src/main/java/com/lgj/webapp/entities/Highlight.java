@@ -25,23 +25,19 @@ public class Highlight {
     private String foto;
     @Column(name = "highlightDescripcion")
     private String descripcion;
-    @Column(name = "highlightEdition")
-    private Edition edicion;
-    @Column(name = "highlightPosts")
-    private List<Post> publicaciones;
+    //@Column(name = "highlightPosts")
+    //private List<Post> publicaciones;
 
     public Long getId() {return id;}
     public String getTitulo() {return titulo;}
     public String getFoto() {return foto;}
     public String getDescripcion() {return descripcion;}
-    public Edition getEdition() {return edicion;}
-    public List<Post> getPublicaciones() {return publicaciones;}
+    //public List<Post> getPublicaciones() {return publicaciones;}
 
     public void setId(Long id){this.id =id;}
     public void setTitulo(String titulo){this.titulo =titulo;}
     public void setFoto(String foto){this.foto =foto;}
     public void setDescripcion(String descripcion){this.descripcion =descripcion;}
-    public void setEdition(Edition edicion){this.edicion =edicion;}
-    public void addPost(Post publicacion){this.publicaciones.add(publicacion);}
+    //public void addPost(Post publicacion){this.publicaciones.add(publicacion);}
 
 }

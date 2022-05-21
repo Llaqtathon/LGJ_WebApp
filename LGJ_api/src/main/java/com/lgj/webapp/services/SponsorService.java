@@ -3,9 +3,14 @@ import com.lgj.webapp.entities.Sponsor;
 import com.lgj.webapp.repository.SponsorRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service; 
 
+@Service
 public class SponsorService {
     private SponsorRepository sponsorRepository;
+    public SponsorService(SponsorRepository sponsorRepository) {
+        this.sponsorRepository = sponsorRepository;
+    }
 
     public List<Sponsor> getAll(){
         return sponsorRepository.findAll();

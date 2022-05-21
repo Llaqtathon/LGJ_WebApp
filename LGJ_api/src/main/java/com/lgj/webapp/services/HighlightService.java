@@ -6,8 +6,13 @@ import java.util.Optional;
 import com.lgj.webapp.entities.Highlight;
 import com.lgj.webapp.repository.HighlightRepository;
 
+import org.springframework.stereotype.Service;
+@Service
 public class HighlightService {
     private HighlightRepository highlightRepository;
+    public HighlightService(HighlightRepository highlightRepository) {
+        this.highlightRepository = highlightRepository;
+    }
 
     public List<Highlight> getAll(){
         return highlightRepository.findAll();
