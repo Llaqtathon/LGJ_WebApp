@@ -1,1 +1,2 @@
-web: java -jar target/lgj_api-0.0.1-SNAPSHOT.jar
+run:
+    web: java -jar target/lgj_api-0.0.1-SNAPSHOT.jar
