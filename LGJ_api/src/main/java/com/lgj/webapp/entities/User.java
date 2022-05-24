@@ -82,4 +82,6 @@ public class User{
   }
   @OneToMany(mappedBy = "user")
   private Set<UserMicroE> interesado;
+
+  public String getUsername() {return username;}
 }

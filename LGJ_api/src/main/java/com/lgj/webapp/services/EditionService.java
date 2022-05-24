@@ -1,6 +1,6 @@
 package com.lgj.webapp.services;
 
-
+/*
 import com.lgj.webapp.entities.Edition;
 import com.lgj.webapp.entities.Group;
 import com.lgj.webapp.entities.User;
@@ -34,3 +34,4 @@ public class EditionService {
         }).orElseThrow(() -> new EditionNotFoundException("Edition not found with id: " + editionId));
     }
 }
+*/
