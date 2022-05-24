@@ -1,6 +1,5 @@
 package com.lgj.webapp.repository;
 
-
 import com.lgj.webapp.entities.Post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
