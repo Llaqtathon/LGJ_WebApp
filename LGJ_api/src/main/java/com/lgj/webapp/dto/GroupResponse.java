@@ -11,5 +11,5 @@ public class GroupResponse {
     private String name;
     private String photoUrl;
     private Game game;
-    Set<UserDto> users;
+    Set<UserOrgShort> users;
 }
