@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.lgj.webapp.dto.InscripcionRequest;
 import com.lgj.webapp.dto.InscripcionResponse;
-import com.lgj.webapp.dto.OrderRequest;
-import com.lgj.webapp.dto.OrderResponse;
 import com.lgj.webapp.entities.Inscripcion;
-import com.lgj.webapp.entities.Order;
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.services.InscripcionService;
 import com.lgj.webapp.util.GeneralStatus;

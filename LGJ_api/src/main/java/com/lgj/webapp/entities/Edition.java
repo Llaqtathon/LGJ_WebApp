@@ -1,7 +1,10 @@
 package com.lgj.webapp.entities;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lgj.webapp.dto.EditionRequest;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -51,18 +55,33 @@ public class Edition {
   private String location;
   @Column (name = "location_url_gmaps", nullable = true)
   private String locationUrlGmaps;
+
   @OneToMany(mappedBy = "edition")
-  @JsonIgnore // TODO: Create Edition Response DTO and remove JsonIgnore
   private List<Group> groups;
+
   @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "edition")
   @Fetch(value = FetchMode.SUBSELECT)
   private List<MentorEdition> mentors;
 
   public Edition addGroup(Group group) {
     groups.add(group);
+    //not same name ? 
     return this;
   }
+  
   @OneToMany(fetch=FetchType.LAZY, mappedBy = "edition", orphanRemoval = true)
   // @Fetch(value = FetchMode.SUBSELECT)
   private List<MicroEvento> microeventos;
+
+  public Edition(EditionRequest editionRequest) {
+    this.name = editionRequest.getName();
+    this.description = editionRequest.getDescription();
+    this.dateStart = editionRequest.getDateStart();
+    this.dateEnd = editionRequest.getDateEnd();
+    this.theme = editionRequest.getTheme();
+    this.location = editionRequest.getLocation();
+    this.locationUrlGmaps = editionRequest.getLocationUrlGmaps();
+  }
+
+  public Edition(){}
 }

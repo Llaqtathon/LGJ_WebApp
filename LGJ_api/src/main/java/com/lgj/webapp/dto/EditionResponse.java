@@ -7,20 +7,14 @@ import com.lgj.webapp.entities.MentorEdition;
 import lombok.Data;
 
 @Data
-public class EditionRequest {
-    @NotBlank
+public class EditionResponse {
     private String name;
-    @NotBlank
     private String description;
-    @NotBlank
     private Date dateStart;
-    @NotBlank
     private Date dateEnd;
-    @NotBlank
     private String theme;
-    private Integer spaceAvailable;
     private String location;
     private String locationUrlGmaps;
+    
     private List<MentorEdition> mentors;
 }
-

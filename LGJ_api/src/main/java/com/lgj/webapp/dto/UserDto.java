@@ -1,6 +1,5 @@
 package com.lgj.webapp.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Date;
@@ -12,7 +11,6 @@ import com.lgj.webapp.entities.Distrito;
 import com.lgj.webapp.util.RolSelection;
 
 @Data
-@AllArgsConstructor
 public class UserDto {
     private Long id;
     

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.lgj.webapp.dto.GroupRequest;
+import com.lgj.webapp.services.EditionService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Group {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "photo_url") //TODO: (bug) DOESN'T WORK!
+    @Column(name = "photo_url")
     private String photoUrl;
 
     @ManyToMany
@@ -49,13 +50,11 @@ public class Group {
         this.photoUrl = groupRequest.getPhotoUrl();
     }
 
-    //TODO: Add relationship to Event
-
     public Group addUser(User user) {
         users.add(user);
         return this;
     }
-
+    
     public Group removeUser(Long userId) {
         this.users = users
                 .stream()
@@ -63,5 +62,14 @@ public class Group {
                 .collect(Collectors.toSet());
 
         return this;
+    }
+
+    public Group addEdition(Edition edition) {
+        this.edition = edition;
+        return this;
+    }
+
+    public static String getGroupName() {
+
     }
 }

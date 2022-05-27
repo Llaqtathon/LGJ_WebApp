@@ -49,8 +49,8 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "plarform_id"))
     Set<Platform> platforms;
 
-    /*@OneToOne(mappedBy = "group", cascade = CascadeType.ALL)
-    private Group group;*/
+    @OneToOne(mappedBy = "game")
+    private Group group;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_id")

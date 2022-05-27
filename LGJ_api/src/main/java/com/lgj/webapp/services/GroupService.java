@@ -1,6 +1,7 @@
 package com.lgj.webapp.services;
 
 import com.lgj.webapp.dto.GameRequest;
+import com.lgj.webapp.entities.Edition;
 import com.lgj.webapp.entities.Game;
 import com.lgj.webapp.entities.Group;
 import com.lgj.webapp.entities.User;
@@ -20,16 +21,21 @@ import java.util.stream.Collectors;
 public class GroupService {
     @Autowired
     private GroupRepository groupRepository;
-
     @Autowired
     private UserRepository userRepository;
+    private EditionService editionService;
 
-    public GroupService(GroupRepository repository) {
+    public GroupService(GroupRepository repository, EditionService editionService) {
         this.groupRepository = repository;
+        this.editionService = editionService;
     }
 
     public Group createGroup(GroupRequest groupRequest) {
-        return groupRepository.save(new Group(groupRequest));
+        Group group = new Group(groupRequest);
+        Edition edition = editionService.addGroupToEdition(groupRequest.getEditionId(), group);
+        
+        group.addEdition(edition);
+        return groupRepository.save(group);
     }
 
     public Group getById(Long groupId) {
