@@ -1,21 +1,19 @@
 package com.lgj.webapp.controllers;
-/*
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.lgj.webapp.dto.EditionRequest;
+import com.lgj.webapp.dto.EditionResponse;
 import com.lgj.webapp.entities.Edition;
 import com.lgj.webapp.services.EditionService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(name="/api/v1/editions")
+@RequestMapping("/editions")
 public class EditionController {
     private EditionService editionService;
 
@@ -23,13 +21,14 @@ public class EditionController {
 
     @PostMapping
     public ResponseEntity<Edition> createEdition(@RequestBody EditionRequest request){
-        return new ResponseEntity<Edition>(editionService.createEdition(request), HttpStatus.CREATED);
+        Edition edition = editionService.createEdition(request);
+        return new ResponseEntity<Edition>(edition, HttpStatus.CREATED);
     }
     @GetMapping
-    public ResponseEntity<List<Edition>> findAllEditions(){
+    public ResponseEntity<List<EditionResponse>> findAllEditions(){
         List<EditionResponse> editions = new ArrayList<>();
 
-        return new EditionResponse(editions, HttpStatus.OK);
+        return new ResponseEntity<>(editions, HttpStatus.OK);
     }
 }
-*/
+

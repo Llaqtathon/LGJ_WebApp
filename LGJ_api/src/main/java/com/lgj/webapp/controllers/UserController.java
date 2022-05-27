@@ -4,7 +4,6 @@ import com.lgj.webapp.dto.InscripcionResponse;
 import com.lgj.webapp.dto.OrderResponse;
 import com.lgj.webapp.dto.UserDto;
 import com.lgj.webapp.entities.Inscripcion;
-import com.lgj.webapp.entities.Order;
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.services.UserService;
 //import com.lgj.webapp.util.EntityDtoConverter;

@@ -1,6 +1,5 @@
 package com.lgj.webapp.controllers;
 
-
 import java.util.List;
 
 import com.lgj.webapp.dto.GameRequest;
@@ -11,7 +10,6 @@ import com.lgj.webapp.entities.Group;
 import com.lgj.webapp.services.GroupService;
 
 import com.lgj.webapp.util.GroupConverter;
-import org.hibernate.cfg.beanvalidation.GroupsPerOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

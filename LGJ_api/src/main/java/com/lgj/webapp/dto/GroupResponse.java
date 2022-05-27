@@ -11,5 +11,6 @@ public class GroupResponse {
     private String name;
     private String photoUrl;
     private Game game;
+    private Long editionId;
     Set<UserOrgShort> users;
 }
