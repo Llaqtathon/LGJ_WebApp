@@ -52,5 +52,6 @@ public class Game {
         this.urlAdditional = gameRequest.getUrlAdditional();
         this.description = gameRequest.getDescription();
         this.fotoUrl = gameRequest.getFotoUrl();
+        this.platforms = gameRequest.getPlatforms();
     }
 }

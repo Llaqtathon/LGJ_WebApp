@@ -12,6 +12,7 @@ import com.lgj.webapp.services.GroupService;
 import com.lgj.webapp.util.GroupConverter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,6 +58,12 @@ public class GroupController {
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{groupId}")
+    public ResponseEntity<GroupResponse> updateGroup(@PathVariable Long groupId, @RequestBody GroupRequest request) {
+        Group group = groupService.updateGroup(groupId, request);
+        return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.OK);
+    }
+
     @PatchMapping("/{groupId}/join/{userId}")
     public ResponseEntity<GroupResponse> addUser(@PathVariable Long groupId, @PathVariable Long userId) {
         Group group = groupService.addUserToGroup(groupId, userId);
@@ -76,8 +83,8 @@ public class GroupController {
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<GroupResponse> deleteGroup(@PathVariable Long groupId) {
-        Group group = groupService.deleteGroup(groupId);
-        return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.OK);
+    public ResponseEntity<String> deleteGroup(@PathVariable Long groupId) {
+        groupService.deleteGroup(groupId);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class GameResponse {
+    private Long id;
     private String name;
     private String urlGGJ;
     private String urlIcht;
