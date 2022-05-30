@@ -35,7 +35,7 @@ public class UserController {
         this.userConverter = userConverter;
         this.converter = converter;
     }
-
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody User request) {
         User user = userService.createUser(request);
