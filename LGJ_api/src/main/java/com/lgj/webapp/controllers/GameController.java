@@ -3,8 +3,10 @@ package com.lgj.webapp.controllers;
 import java.util.List;
 
 import com.lgj.webapp.dto.GameRequest;
+import com.lgj.webapp.dto.GameResponse;
 import com.lgj.webapp.entities.Game;
 import com.lgj.webapp.services.GameService;
+import com.lgj.webapp.util.EditionConverter;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,29 +24,30 @@ import org.springframework.http.HttpStatus;
 @RequestMapping("/games")
 @RequiredArgsConstructor
 public class GameController {
-
+    private final EditionConverter editionConverter;
     private final GameService gameService;
 
     @GetMapping
-    public ResponseEntity<List<Game>> findAllGames() {
+    public ResponseEntity<List<GameResponse>> findAllGames() {
         List<Game> games = gameService.getAll();
-        return new ResponseEntity<>(games, HttpStatus.OK);
+        return new ResponseEntity<>(this.editionConverter.convertGameEntityToDto(games), HttpStatus.OK);
     }
 
     @GetMapping("/{gameId}")
-    public ResponseEntity<Game> findGameById(@PathVariable Long gameId) {
+    public ResponseEntity<GameResponse> findGameById(@PathVariable Long gameId) {
         Game game = gameService.getById(gameId);
-        return new ResponseEntity<>(game, HttpStatus.OK);
+        return new ResponseEntity<>(this.editionConverter.convertGameEntityToDto(game), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody GameRequest request) {
+    public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest request) {
         Game game = gameService.createGame(request);
-        return new ResponseEntity<>(game, HttpStatus.CREATED);
+        return new ResponseEntity<>(this.editionConverter.convertGameEntityToDto(game), HttpStatus.CREATED);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Game>> findAllByUserId(@PathVariable Long userId) {
-        return new ResponseEntity<>(gameService.getAllByUserId(userId), HttpStatus.OK);
+    public ResponseEntity<List<GameResponse>> findAllByUserId(@PathVariable Long userId) {
+        List<Game> games = gameService.getAllByUserId(userId);
+        return new ResponseEntity<>(this.editionConverter.convertGameEntityToDto(games), HttpStatus.OK);
     }
 }

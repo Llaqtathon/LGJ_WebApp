@@ -3,6 +3,8 @@ package com.lgj.webapp.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
+
 
 import com.lgj.webapp.entities.Game; 
 
@@ -16,7 +18,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     """)//jpql
     List<Game> findGameByUserId(String accountId);*/
 
-    List<Game> findGamesByPlatformsId(String accountId); 
+    //Set<Game> findGamesByPlatformsId(String accountId); 
     // Check documentation for more info
   
     Game findGameById(String gameId);

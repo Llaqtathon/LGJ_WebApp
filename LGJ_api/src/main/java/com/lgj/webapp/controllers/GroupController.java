@@ -69,9 +69,15 @@ public class GroupController {
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{groupId}/  /{userId}")
+    @PatchMapping("/{groupId}/leave/{userId}")
     public ResponseEntity<GroupResponse> removeUser(@PathVariable Long groupId, @PathVariable Long userId) {
         Group group = groupService.removeUserFromGroup(groupId, userId);
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<GroupResponse> deleteGroup(@PathVariable Long groupId) {
+        Group group = groupService.deleteGroup(groupId);
+        return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.OK);
     }
 }

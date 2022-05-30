@@ -33,8 +33,12 @@ public class GroupService {
     public Group createGroup(GroupRequest groupRequest) {
         Group group = new Group(groupRequest);
         Edition edition = editionService.addGroupToEdition(groupRequest.getEditionId(), group);
-        
         group.addEdition(edition);
+
+        if (groupRequest.getGame() != null) {
+            group.setGame(new Game(groupRequest.getGame()));
+        }
+
         return groupRepository.save(group);
     }
 
@@ -78,6 +82,13 @@ public class GroupService {
         return groupRepository.findById(groupId).map(group -> {
             group.setGame(new Game(gameRequest));
             return groupRepository.save(group);
+        }).orElseThrow(() -> new GroupNotFoundException("Group not found with id: " + groupId));
+    }
+
+    public Group deleteGroup(Long groupId) {
+        return groupRepository.findById(groupId).map(group -> {
+            groupRepository.delete(group);
+            return group;
         }).orElseThrow(() -> new GroupNotFoundException("Group not found with id: " + groupId));
     }
 }

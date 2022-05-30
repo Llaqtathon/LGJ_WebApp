@@ -5,21 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
-
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.persistence.*;
 
 
 import com.lgj.webapp.dto.GameRequest;
+import com.lgj.webapp.util.PlatformSelection;
 
 @Data
 @Entity
@@ -42,19 +32,18 @@ public class Game {
     private String description;
     @Column(name = "foto_url")
     private String fotoUrl;
-    @ManyToMany
-    @JoinTable(
-            name = "games_platforms",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "plarform_id"))
-    Set<Platform> platforms;
-
+  
     @OneToOne(mappedBy = "game")
     private Group group;
 
     @ManyToOne
     @JoinColumn(name = "proyecto_id")
     private Proyecto proyecto;
+
+    
+    @ElementCollection
+    @Enumerated
+    private Set<PlatformSelection> platforms;
 
     public Game(GameRequest gameRequest) {
         this.name = gameRequest.getName();
