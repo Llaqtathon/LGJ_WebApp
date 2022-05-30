@@ -11,4 +11,5 @@ public class GroupRequest {
     private String photoUrl;
     @NotBlank
     private Long editionId;
+    private GameRequest game;
 }

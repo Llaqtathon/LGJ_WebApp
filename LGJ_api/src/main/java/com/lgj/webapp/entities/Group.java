@@ -68,8 +68,4 @@ public class Group {
         this.edition = edition;
         return this;
     }
-
-    public static String getGroupName() {
-
-    }
 }

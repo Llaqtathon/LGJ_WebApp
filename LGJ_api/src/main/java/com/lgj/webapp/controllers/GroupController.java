@@ -57,21 +57,27 @@ public class GroupController {
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{groupId}/join/{userId}")
+    @PatchMapping("/{groupId}/join/{userId}")
     public ResponseEntity<GroupResponse> addUser(@PathVariable Long groupId, @PathVariable Long userId) {
         Group group = groupService.addUserToGroup(groupId, userId);
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{groupId}/game")
+    @PatchMapping("/{groupId}/game")
     public ResponseEntity<GroupResponse> updateGame(@PathVariable Long groupId, @RequestBody GameRequest gameRequest) {
         Group group = groupService.updateGame(groupId, gameRequest);
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{groupId}/remove/{userId}")
+    @PatchMapping("/{groupId}/leave/{userId}")
     public ResponseEntity<GroupResponse> removeUser(@PathVariable Long groupId, @PathVariable Long userId) {
         Group group = groupService.removeUserFromGroup(groupId, userId);
         return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<GroupResponse> deleteGroup(@PathVariable Long groupId) {
+        Group group = groupService.deleteGroup(groupId);
+        return new ResponseEntity<>(groupConverter.convertEntityToDto(group), HttpStatus.OK);
     }
 }
