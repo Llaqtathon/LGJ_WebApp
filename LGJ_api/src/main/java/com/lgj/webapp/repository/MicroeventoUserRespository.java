@@ -10,4 +10,5 @@ public interface MicroeventoUserRespository  extends JpaRepository<UserMicroE, L
   List<UserMicroE> findByMicroeventoId(Long microEventoId);
   List<UserMicroE> findByUserId(Long userId);
   UserMicroE getOneByUserIdAndMicroeventoId(Long userId, Long microEventoId);
+  // List<UserMicroE> findByUserIdAndEditionId(Long userId, Long editionId);
 }
