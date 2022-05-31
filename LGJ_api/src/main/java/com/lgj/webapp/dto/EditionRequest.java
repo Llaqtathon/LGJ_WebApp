@@ -17,10 +17,14 @@ public class EditionRequest {
     @NotBlank
     private Date dateEnd;
     @NotBlank
+    // private Date dateStartPreproduction;
+    // private Date dateEndPostproduction;
     private String theme;
     private Integer spaceAvailable;
     private String location;
     private String locationUrlGmaps;
     private List<MentorEdition> mentors;
+
+//   private Distrito distrito;
 }
 

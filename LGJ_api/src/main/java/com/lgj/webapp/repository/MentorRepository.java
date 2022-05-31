@@ -19,7 +19,7 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
   @Query(value = query_mentor, nativeQuery = true)
   Mentor getOne(Long id);
 
-  String query_mentor_names = "select u.*, m.* from mentor m "
+  String query_mentor_names = "select u.*, m.* from mentor m " 
   + "join users u on m.mentor_id = u.id "
   + "where u.nombres like %:names% or u.apellidos like %:names%";
   @Query(value = query_mentor_names, nativeQuery = true)

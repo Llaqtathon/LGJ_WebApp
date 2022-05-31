@@ -12,5 +12,6 @@ public class EditionResponse {
     private String theme;
     private String location;
     private String locationUrlGmaps;
-
+    private Integer spaceAvailable;
+    private Boolean isActive;
 }

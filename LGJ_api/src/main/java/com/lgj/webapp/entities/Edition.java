@@ -23,8 +23,13 @@ import com.lgj.webapp.dto.EditionRequest;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
+// @NoArgsConstructor
+@Builder()
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "edicion")
@@ -36,7 +41,7 @@ public class Edition {
   private String name;
   @Column (name = "description", nullable = true)
   private String description;
-  @Column (name = "date_start_preproduction", nullable = true)
+  @Column (name = "date_start_preproduction", nullable = true, columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP")
   private Date dateStartPreproduction;
   @Column (name = "date_end_postproduction", nullable = true)
   private Date dateEndPostproduction;
@@ -44,6 +49,8 @@ public class Edition {
   private Date dateStart;
   @Column (name = "date_end", nullable = true)
   private Date dateEnd;
+  @Column (name = "is_active", nullable = false, columnDefinition = "boolean default true")
+  private Boolean isActive;
   @Column (name = "theme", nullable = true)
   private String theme;
   @Column (name = "space_available")

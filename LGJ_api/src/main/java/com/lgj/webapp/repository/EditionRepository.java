@@ -1,6 +1,7 @@
 package com.lgj.webapp.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lgj.webapp.entities.Edition;
@@ -21,5 +22,7 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
   // format 2012-01-12
   @Query(value = query_current_event, nativeQuery = true)
   Edition findCurrentEvent(Date date);
+
+  List<Edition> findByIsActive(Boolean isActive);
 
 }
