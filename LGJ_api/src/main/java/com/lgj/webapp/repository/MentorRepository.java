@@ -12,10 +12,15 @@ import org.springframework.data.repository.query.Param;
 public interface MentorRepository extends JpaRepository<Mentor, Long> {
   
   Mentor findById(String mentorId);
+
+  String query_mentor = "select u.*, m.* from mentor m "
+  + "join users u on m.mentor_id = u.id "
+  + "where u.id = ?1";
+  @Query(value = query_mentor, nativeQuery = true)
   Mentor getOne(Long id);
 
-  String query_mentor_names = "select u.*, m.url_photo from mentor m"
-  + "join users u on m.mentor_id = u.id"
+  String query_mentor_names = "select u.*, m.* from mentor m "
+  + "join users u on m.mentor_id = u.id "
   + "where u.nombres like %:names% or u.apellidos like %:names%";
   @Query(value = query_mentor_names, nativeQuery = true)
   List<Mentor> findByNamesOrLastNames(@Param("names") String names);
