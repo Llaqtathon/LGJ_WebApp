@@ -10,6 +10,7 @@ import com.lgj.webapp.repository.EditionRepository;
 import com.lgj.webapp.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,29 @@ public class EditionService {
     public Edition createEdition(EditionRequest editionRequest) {
         return editionRepository.save(new Edition(editionRequest));
     }
+    // public Edition updateEdition(Long id, EditionRequest editionRequest) {
+    //     Edition edition = editionRepository.getOne(id);
+    //     edition.builder()
+    //             .name(editionRequest.getName())
+    //             .description(editionRequest.getDescription())
+    //             .dateStart(editionRequest.getDateStart())
+    //             .dateEnd(editionRequest.getDateEnd())
+    //             .description(editionRequest.getDescription())
+    //             .location(editionRequest.getLocation())
+    //             .locationUrlGmaps(editionRequest.getLocationUrlGmaps())
+    //             .theme(editionRequest.getTheme())
+    //             .build();
+    //     return editionRepository.save(edition);
+    // }
+
+    public Edition closeEdition(Long id) {
+        Edition edition = editionRepository.getOne(id);
+        edition.setDateEndPostproduction(new Date());
+        edition.setIsActive(false);
+        return editionRepository.save(edition);
+    }
+    // mentorEdition.setStatus(request.getStatus());
+    // return mentorEditionRepository.save(mentorEdition);
 
     public Edition addGroupToEdition(Long editionId, Group group) {
         return editionRepository.findById(editionId).map(edition -> {
@@ -37,6 +61,10 @@ public class EditionService {
     
     public List<Edition> getAll() {
         return editionRepository.findAll();
+    }
+
+    public List<Edition> getAllActive() {
+        return editionRepository.findByIsActive(true);
     }
 
     public List<Game> findAllGamesByEditionId(Long editionId) {

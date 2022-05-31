@@ -31,10 +31,22 @@ public class EditionController {
         Edition edition = editionService.createEdition(request);
         return new ResponseEntity<Edition>(edition, HttpStatus.CREATED);
     }
+    @PutMapping("/close/{editionId}")
+    public ResponseEntity<Edition> closeEdition(@PathVariable Long editionId){
+        Edition edition = editionService.closeEdition(editionId);
+        return new ResponseEntity<Edition>(edition, HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<EditionResponse>> findAllEditions(){
         List<Edition> editions = editionService.getAll();
 
+        return new ResponseEntity<List<EditionResponse>>(
+            this.editionConverter.convertEntityToDto(editions), HttpStatus.OK
+        );
+    }
+    @GetMapping("/actives")
+    public ResponseEntity<List<EditionResponse>> findAllEditionsActive(){
+        List<Edition> editions = editionService.getAllActive();
         return new ResponseEntity<List<EditionResponse>>(
             this.editionConverter.convertEntityToDto(editions), HttpStatus.OK
         );
