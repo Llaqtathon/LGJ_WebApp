@@ -1,7 +1,7 @@
 package com.lgj.webapp.services;
 import java.util.List;
 
-import com.lgj.webapp.entities.Inscripcion;
+// import com.lgj.webapp.entities.Inscripcion;
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.repository.UserRepository;
 import com.lgj.webapp.util.RolSelection;
