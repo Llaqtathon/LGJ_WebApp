@@ -4,7 +4,6 @@ import com.lgj.webapp.dto.InscripcionResponse;
 import com.lgj.webapp.dto.OrderResponse;
 import com.lgj.webapp.dto.UserDto;
 import com.lgj.webapp.entities.Inscripcion;
-import com.lgj.webapp.entities.Order;
 import com.lgj.webapp.entities.User;
 import com.lgj.webapp.services.UserService;
 //import com.lgj.webapp.util.EntityDtoConverter;
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.lgj.webapp.util.GeneralStatus;
 import com.lgj.webapp.util.InscripcionDtoConverter;
 import com.lgj.webapp.util.RolSelection;
+import com.lgj.webapp.util.UserConverter;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,25 +27,28 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private UserConverter userConverter;
     private InscripcionDtoConverter converter;
 
-    public UserController(UserService userService, InscripcionDtoConverter converter) {
+    public UserController(UserService userService, InscripcionDtoConverter converter, UserConverter userConverter) {
         this.userService = userService;
+        this.userConverter = userConverter;
         this.converter = converter;
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User request) {
-        return new ResponseEntity<User>(userService.createUser(request), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> createUser(@RequestBody User request) {
+        User user = userService.createUser(request);
+        return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.CREATED);
     }
     @GetMapping("/{id}/{rol}")
-    public ResponseEntity<User> findParticipant(@PathVariable Long id, @PathVariable RolSelection rol) {
+    public ResponseEntity<UserDto> findParticipant(@PathVariable Long id, @PathVariable RolSelection rol) {
         User user = userService.findById(id);
         user.setRol(rol);
-        return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
+        return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.OK);
     }
     @PatchMapping("/{id}/{rol}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @PathVariable RolSelection rol, @RequestBody User userDetails) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @PathVariable RolSelection rol, @RequestBody User userDetails) {
         User user = userService.findById(id);
         try{
             user.setNombres(userDetails.getNombres());
@@ -55,15 +57,18 @@ public class UserController {
             user.setEmail(userDetails.getEmail());
             user.setDni(userDetails.getDni());
             user.setRol(rol);
-        return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
+
+            User updatedUser = userService.updateUser(user);
+            
+            return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(updatedUser), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping("/{rol}")
-    public ResponseEntity<List<User>> findParticipantByRol(@PathVariable RolSelection rol) {
+    public ResponseEntity<List<UserDto>> findParticipantByRol(@PathVariable RolSelection rol) {
         List<User> user = userService.getParticipantsByRol(rol);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<List<UserDto>>(userConverter.convertEntityToDto(user), HttpStatus.OK);
     }
 }
 

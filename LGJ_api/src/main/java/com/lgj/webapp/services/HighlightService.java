@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.lgj.webapp.entities.Highlight;
+import com.lgj.webapp.entities.Post;
+import com.lgj.webapp.exception.HighlightNotFoundException;
 import com.lgj.webapp.repository.HighlightRepository;
 
 import org.springframework.stereotype.Service;
@@ -27,4 +29,5 @@ public class HighlightService {
     public void delete(Long id){
         highlightRepository.deleteById(id);
     }
+
 }

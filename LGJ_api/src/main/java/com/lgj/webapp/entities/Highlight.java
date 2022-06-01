@@ -2,12 +2,15 @@ package com.lgj.webapp.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 import lombok.Data;
 
@@ -39,5 +42,5 @@ public class Highlight {
     public void setFoto(String foto){this.foto =foto;}
     public void setDescripcion(String descripcion){this.descripcion =descripcion;}
     //public void addPost(Post publicacion){this.publicaciones.add(publicacion);}
-
+    
 }

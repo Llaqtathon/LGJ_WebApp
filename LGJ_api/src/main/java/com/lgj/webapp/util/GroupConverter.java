@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class GroupConverter {
 
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public GroupConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
