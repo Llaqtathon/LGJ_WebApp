@@ -32,12 +32,7 @@ public class UserController {
         this.userConverter = userConverter;
         this.converter = converter;
     }
-    @CrossOrigin(origins = "http://localhost:4200/")
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody User request) {
-        User user = userService.createUser(request);
-        return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.CREATED);
-    }
+    
     @GetMapping("/{id}/{rol}")
     public ResponseEntity<UserDto> findParticipant(@PathVariable Long id, @PathVariable RolSelection rol) {
         User user = userService.findById(id);
