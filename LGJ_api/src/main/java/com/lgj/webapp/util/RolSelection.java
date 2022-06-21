@@ -1,5 +1,8 @@
 package com.lgj.webapp.util;
 
 public enum RolSelection {
-    PARTICIPANTE, ORGANIZADOR, MENTOR
+    ROLE_USER,
+    ROLE_PARTICIPANTE, 
+    ROLE_ORGANIZADOR, 
+    ROLE_MENTOR
 }

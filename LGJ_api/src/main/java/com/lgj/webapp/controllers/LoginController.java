@@ -1,5 +1,7 @@
 package com.lgj.webapp.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,16 +27,16 @@ public class LoginController {
         this.userService = userService;
         this.userConverter = userConverter;
     }
-    @CrossOrigin(origins = "http://localhost:4200/")
+
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> createUser(@RequestBody User request) {
-        User user = userService.createUser(request);
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody  SignupRequestDto signupRequestDto) {
+        User user = userService.registerUser(signupRequestDto);
         return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.CREATED);
     }
-    @CrossOrigin(origins = "http://localhost:4200/")
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request){
-        LoginResponseDto loginResponseDto=userService.login(request);
+    public ResponseEntity<LoginResponseDto> authenticateUser(@Valid @RequestBody LoginRequestDto request){
+        LoginResponseDto loginResponseDto=userService.authenticateUser(request);
         return new ResponseEntity<LoginResponseDto>(loginResponseDto, HttpStatus.OK);
     }
 

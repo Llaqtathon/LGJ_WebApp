@@ -2,14 +2,9 @@ package com.lgj.webapp.dto;
 
 import lombok.Data;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import com.lgj.webapp.entities.Distrito;
-import com.lgj.webapp.util.RolSelection;
 
 @Data
 public class UserDto {
@@ -21,11 +16,7 @@ public class UserDto {
     private String apellidos;
     private String email;
     private LocalDate nacimiento;
-    @NotBlank
-    @NotNull
     private String telefono;
-    @NotBlank
-    @NotNull
     private DistritoDto distrito;
     private String DNI;
     private String descripcion;
