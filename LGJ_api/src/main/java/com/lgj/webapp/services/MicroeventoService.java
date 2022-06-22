@@ -154,7 +154,7 @@ public class MicroeventoService {
         List <UserMicroE> asignados = micro.getAsignadosIds()
             .stream().map(
                 asignado -> UserMicroE.builder()
-                .user(userRepository.getOne(Long.parseLong(asignado)))
+                .user(userRepository.getOne(asignado))
                 .microevento(microevt)
                 .responsable(true)
                 .build()
@@ -169,7 +169,7 @@ public class MicroeventoService {
             .stream().map(
                 asignado -> {
                     UserMicroE aux = microUserRepository.getOneByUserIdAndMicroeventoId(
-                        Long.parseLong(asignado), micro.getMicroeventId());
+                        asignado, micro.getMicroeventId());
                     aux.setResponsable(true);
                     return aux;
                 }
@@ -177,6 +177,15 @@ public class MicroeventoService {
             .collect(java.util.stream.Collectors.toList());
         return microUserRepository.saveAll(asignados);
     }
+    @Transactional
+    public List<UserMicroE> removeAsignados(MicroEventoAsigRequest micro) {
+        List <UserMicroE> asignados = microUserRepository.findAllById(micro.getAsignadosIds());
+        asignados.forEach(
+            (UserMicroE a) -> { a.setResponsable(false); }
+        );
+        return microUserRepository.saveAll(asignados);
+    }
+
     @Transactional (readOnly = true)
     public List<UserMicroE> getAsignadosByMicroeventoId(Long microeventId) {
         return microUserRepository.findByUserId(microeventId);
