@@ -44,8 +44,8 @@ public class UserController {
         user.setRol(rol);
         return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.OK);
     }
-    @PatchMapping("/{id}/{rol}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @PathVariable RolSelection rol, @RequestBody User userDetails) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,  @RequestBody User userDetails) {
         User user = userService.findById(id);
         try{
             user.setNombres(userDetails.getNombres());
@@ -53,7 +53,6 @@ public class UserController {
             user.setTelefono(userDetails.getTelefono());
             user.setEmail(userDetails.getEmail());
             user.setDni(userDetails.getDni());
-            user.setRol(rol);
 
             User updatedUser = userService.updateUser(user);
             
