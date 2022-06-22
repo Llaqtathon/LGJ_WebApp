@@ -20,7 +20,7 @@ import com.lgj.webapp.util.RolSelection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.lgj.webapp.util.UserConverter;
 import java.util.List;
 
 @RestController
@@ -28,6 +28,7 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private UserConverter userConverter;
     private InscripcionDtoConverter converter;
 
     public UserController(UserService userService, InscripcionDtoConverter converter) {
@@ -46,7 +47,7 @@ public class UserController {
         return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
     }
     @PatchMapping("/{id}/{rol}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @PathVariable RolSelection rol, @RequestBody User userDetails) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @PathVariable RolSelection rol, @RequestBody User userDetails) {
         User user = userService.findById(id);
         try{
             user.setNombres(userDetails.getNombres());
@@ -55,7 +56,10 @@ public class UserController {
             user.setEmail(userDetails.getEmail());
             user.setDni(userDetails.getDni());
             user.setRol(rol);
-        return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
+
+            User updatedUser = userService.updateUser(user);
+
+            return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(updatedUser), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -65,4 +69,5 @@ public class UserController {
         List<User> user = userService.getParticipantsByRol(rol);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
 }
