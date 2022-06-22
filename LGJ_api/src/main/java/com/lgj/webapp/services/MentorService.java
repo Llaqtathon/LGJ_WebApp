@@ -93,7 +93,7 @@ public class MentorService {
       return null;
     }
     Mentor mentor = mentorRepository.getOne(userId);
-    mentor.setRol(RolSelection.MENTOR);
+    //mentor.setRol(RolSelection.MENTOR);
     return mentor;
   }
 
@@ -104,7 +104,7 @@ public class MentorService {
     //nombres, apellidos, url_photo, areas
     //si vacio poner valores por defecto
     String defaultUsername = mentor.getNombres().substring(4) + "." + mentor.getApellidos().substring(4);
-    mentor.setRol(RolSelection.MENTOR);
+    //mentor.setRol(RolSelection.MENTOR);
     mentor.setDni("88888888");
     if (mentor.getTelefono() == null) {
       mentor.setTelefono("99999999");
