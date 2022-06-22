@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,7 +52,7 @@ public class MentorController {
     Mentor mentor = mentorService.getMentorById(mid);
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.OK);
   }
-  @PutMapping("/{mentorId}")
+  @PatchMapping("/{mentorId}")
   public ResponseEntity<MentorResponse> updateMentor(@RequestBody MentorRequest request, @PathVariable String mentorId) {
     Mentor mentor = mentorService.updateMentor(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.OK);
@@ -89,7 +90,7 @@ public class MentorController {
     MentorEdition mentor = mentorService.createMentorEdition(ed_id, request);
     return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.CREATED);
   }
-  @PutMapping("/edition/{editionId}")
+  @PatchMapping("/edition/{editionId}")
   public ResponseEntity<MentorEditionResponse> updateMentorStatus(
     @PathVariable String editionId, @RequestBody MentorEditionRequest request) {
     Long ed_id = Long.parseLong(editionId);
