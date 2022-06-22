@@ -20,14 +20,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 // import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -62,7 +61,7 @@ public class MicroeventoController {
             converter.convertMicroevntToDto(microeventoService.createmicroevento(request)),
             HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<MicroEventoOrgResponse> updateMicroEvent(
         @PathVariable Long id, @RequestBody MicroevntRequest request) {
         return new ResponseEntity<>(
@@ -73,6 +72,12 @@ public class MicroeventoController {
     public ResponseEntity<MicroEventoOrgResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(
             converter.convertMicroevntToDto(microeventoService.getmicroeventoById(id)), HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeAsignMicroEvent(
+        @PathVariable Long id) {
+        microeventoService.deletemicroevento(id);
+        return null;
     }
 
 
@@ -103,12 +108,18 @@ public class MicroeventoController {
         List<UserMicroE> microEvento = microeventoService.createAsignados(request);
         return new ResponseEntity<>(converter.convertMicroevntAsignToDto(microEvento), HttpStatus.CREATED);
     }
-    // @PutMapping("/asignados")
-    // public ResponseEntity<List<MicroEventoOrgResponse>> deleteMicroEvent(
-    //     @RequestBody MicroEventoAsigRequest request) {
-    //     List<UserMicroE> microEvento = microeventoService.updateAsignados(request);
-    //     return new ResponseEntity<>(converter.convertMicroevntAsignToDto(microEvento), HttpStatus.CREATED);
-    // }
+    @PatchMapping("/asignados")
+    public ResponseEntity<List<UserOrgShort>> updateAsignMicroEvent(
+        @RequestBody MicroEventoAsigRequest request) {
+        List<UserMicroE> microEvento = microeventoService.updateAsignados(request);
+        return new ResponseEntity<>(converter.convertMicroevntAsignToDto(microEvento), HttpStatus.OK);
+    }
+    @DeleteMapping("/asignados")
+    public ResponseEntity<Void> removeAsignMicroEvent(
+        @RequestBody MicroEventoAsigRequest request) {
+        microeventoService.removeAsignados(request);
+        return null;
+    }
     @GetMapping("/asignados/{microeventId}")
     public ResponseEntity<List<UserOrgShort>> getAsignados(@PathVariable Long microeventId) {
         List<UserMicroE> microEvento = microeventoService.getAsignadosByMicroeventoId(microeventId);

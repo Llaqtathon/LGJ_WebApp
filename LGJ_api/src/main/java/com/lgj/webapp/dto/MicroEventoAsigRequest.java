@@ -21,6 +21,6 @@ public class MicroEventoAsigRequest {
   // private String nombrePonente;
   // private String description;
   // private int cupo;
-  private List<String> asignadosIds;
+  private List<Long> asignadosIds;
   // private List<EnlaceStreaming> enlaces;
 }
