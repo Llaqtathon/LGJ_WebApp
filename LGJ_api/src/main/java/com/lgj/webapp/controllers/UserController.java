@@ -32,20 +32,14 @@ public class UserController {
         this.userConverter = userConverter;
         this.converter = converter;
     }
-    @CrossOrigin(origins = "http://localhost:4200/")
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody User request) {
-        User user = userService.createUser(request);
-        return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.CREATED);
-    }
-    @GetMapping("/{id}/{rol}")
-    public ResponseEntity<UserDto> findParticipant(@PathVariable Long id, @PathVariable RolSelection rol) {
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> findParticipant(@PathVariable Long id) {
         User user = userService.findById(id);
-        user.setRol(rol);
         return new ResponseEntity<UserDto>(userConverter.convertEntityToDto(user), HttpStatus.OK);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,  @RequestBody User userDetails) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         User user = userService.findById(id);
         try{
             user.setNombres(userDetails.getNombres());
@@ -61,10 +55,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/{rol}")
+   /*  @GetMapping("/{rol}")
     public ResponseEntity<List<UserDto>> findParticipantByRol(@PathVariable RolSelection rol) {
         List<User> user = userService.getParticipantsByRol(rol);
         return new ResponseEntity<List<UserDto>>(userConverter.convertEntityToDto(user), HttpStatus.OK);
-    }
+    }*/
 }
 

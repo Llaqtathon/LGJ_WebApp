@@ -1,5 +1,6 @@
 package com.lgj.webapp.util;
 
+import com.lgj.webapp.dto.SignupRequestDto;
 import com.lgj.webapp.dto.UserDto;
 import com.lgj.webapp.entities.User;
 
@@ -26,5 +27,9 @@ public class UserConverter {
         return users.stream()
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
+    }
+    
+    public User signup(SignupRequestDto signupRequestDto){
+        return modelMapper.map(signupRequestDto, User.class);
     }
 }
