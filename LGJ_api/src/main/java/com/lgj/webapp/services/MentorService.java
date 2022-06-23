@@ -60,6 +60,10 @@ public class MentorService {
   }
   
   @Transactional(readOnly = true)
+  public List<Mentor> getAll() {
+    return mentorRepository.findAll();
+  }
+  @Transactional(readOnly = true)
   public Mentor getMentorById(Long mentorId) {
     return mentorRepository.getOne(mentorId);
   }
@@ -186,13 +190,19 @@ public class MentorService {
     
     return mentorAreaRepository.saveAll(mentorAreas);
   }
+  
+  @Transactional
+  public void deleteMentorAreas(Long mentorId, List<Long> areasId) {
+    Mentor mentor = mentorRepository.getById(mentorId);
+    List<MentorArea> toRemove = mentorAreaRepository.findByMentor(mentor);
+    mentorAreaRepository.deleteAll(toRemove);
+  }
 
   //disponibilidad
   @Transactional(readOnly = true)
   public List<MentorAvailability> getMentorAvailabilities(Long mentorId, Long editionId) {
     return mentorAvailabilityRepository.findAvailabilityByMentorIdAndEditionId(mentorId, editionId);
   }
-
   @Transactional
   public List<MentorAvailability> saveMentorAvailability(
     MentorAvailabilitiesRequest maRequest) {
@@ -211,7 +221,6 @@ public class MentorService {
 
     return mentorAvailabilityRepository.saveAll(mentorAvailabilities);
   }
-
   @Transactional
   public void deleteMentorAvailability(Long mentorAvailabilityId) {
     mentorAvailabilityRepository.deleteById(mentorAvailabilityId);
@@ -247,7 +256,17 @@ public class MentorService {
     mentorEdition.setStatus(request.getStatus());
     return mentorEditionRepository.save(mentorEdition);
   }
-
+  @Transactional
+  public void deleteMentorEdition(Long editionId, Long mentorId) {
+    MentorEdition toRemove = mentorEditionRepository.getOneByMentorIdAndEditionId(mentorId,editionId);
+    deleteMentorAvailabilities(
+      toRemove.getAvailabilities().stream().map(
+        (MentorAvailability ma) -> ma.getId()
+        ).collect(Collectors.toList()
+      )
+    );
+    mentorEditionRepository.delete(toRemove);
+  }
 
 
 }
