@@ -41,6 +41,11 @@ public class MentorController {
     this.converter = converter;
   }
   
+  @GetMapping
+  public ResponseEntity<List<MentorResponse>> findAll() {
+    List<Mentor> mentors = mentorService.getAll();
+    return new ResponseEntity<>(converter.convertMentorToDto(mentors), HttpStatus.OK);
+  }
   @PostMapping
   public ResponseEntity<MentorResponse> createMentor(@RequestBody Mentor request) throws ParseException {
     Mentor mentor = mentorService.createMentor(request);
@@ -56,14 +61,6 @@ public class MentorController {
   public ResponseEntity<MentorResponse> updateMentor(@RequestBody MentorRequest request, @PathVariable String mentorId) {
     Mentor mentor = mentorService.updateMentor(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorToDto(mentor), HttpStatus.OK);
-  }
-  @GetMapping("/{editionId}/{mentorId}")
-  public ResponseEntity<MentorEditionResponse> findMentorByIdAndEditionId(
-    @PathVariable String editionId, @PathVariable String mentorId) {
-    Long ed_id = Long.parseLong(editionId);
-    Long mid = Long.parseLong(mentorId);
-    MentorEdition mentor = mentorService.findByIdAndEditionId(mid, ed_id);
-    return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
   }
   @PostMapping("/user/{userId}")
   public ResponseEntity<MentorResponse> createMentorFromUser(@PathVariable String userId) {
@@ -83,6 +80,14 @@ public class MentorController {
     List<MentorEdition> mentors = mentorService.findMentorEditionByEditionId(ed_id);
     return new ResponseEntity<>(converter.convertMentorEditionToMentorDto(mentors), HttpStatus.OK);
   }
+  @GetMapping("/edition/{editionId}/{mentorId}")
+  public ResponseEntity<MentorEditionResponse> findMentorByIdAndEditionId(
+    @PathVariable String editionId, @PathVariable String mentorId) {
+    Long ed_id = Long.parseLong(editionId);
+    Long mid = Long.parseLong(mentorId);
+    MentorEdition mentor = mentorService.findByIdAndEditionId(mid, ed_id);
+    return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
+  }
   @PostMapping("/edition/{editionId}")
   public ResponseEntity<MentorEditionResponse> createMentorStatus(
     @PathVariable String editionId, @RequestBody MentorEditionRequest request) {
@@ -97,6 +102,13 @@ public class MentorController {
     MentorEdition mentor = mentorService.updateMentorEdition(ed_id, request);
     return new ResponseEntity<>(converter.convertMentorEditionToDto(mentor), HttpStatus.OK);
   }
+  @DeleteMapping("/edition/{editionId}/{mentorId}")
+  public ResponseEntity<MentorEditionResponse> removeMentorStatus(
+    @PathVariable String editionId, @PathVariable String mentorId) {
+    mentorService.deleteMentorEdition(
+      Long.parseLong(editionId), Long.parseLong(mentorId));
+    return null;
+  }
 
   @PostMapping("/areas/{mentorId}")
   public ResponseEntity<List<MentorAreaResponse>> createMentorArea(
@@ -109,6 +121,12 @@ public class MentorController {
     @RequestBody MentorAreaRequest request, @PathVariable String mentorId) {
     List<MentorArea> mentorAreas = mentorService.updateMentorAreas(Long.parseLong(mentorId), request);
     return new ResponseEntity<>(converter.convertMentorAreaToDto(mentorAreas), HttpStatus.OK);
+  }
+  @DeleteMapping("/areas/{mentorId}")
+  public ResponseEntity<List<MentorAreaResponse>> deleteMentorArea(
+    @RequestBody List<Long> areasId, @PathVariable String mentorId) {
+    mentorService.deleteMentorAreas(Long.parseLong(mentorId), areasId);
+    return null;
   }
   
   @GetMapping("/availability/{editionId}/{mentorId}")
@@ -134,11 +152,6 @@ public class MentorController {
   @DeleteMapping("/availability/{availabilityId}")
   public ResponseEntity<Void> deleteMentorAvailability(@PathVariable String availabilityId) {
     mentorService.deleteMentorAvailability(Long.parseLong(availabilityId));
-    return null;
-  }
-  @DeleteMapping("/availability")
-  public ResponseEntity<Void> deleteMentorAvailabilities(@RequestBody List<Long> request) {
-    mentorService.deleteMentorAvailabilities(request);
     return null;
   }
 }

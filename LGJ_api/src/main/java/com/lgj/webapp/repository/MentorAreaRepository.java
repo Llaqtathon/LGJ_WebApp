@@ -13,5 +13,6 @@ public interface MentorAreaRepository extends JpaRepository<MentorArea, Long> {
   List<Area> findAreaByMentorId(String mentorId);
   List<Mentor> findMentorByAreaId(String areaId);
   MentorArea getOneByMentorIdAndAreaId(Long mentorId, Integer areaId);
+  List<MentorArea> findByMentor(Mentor mentor);
 
 }
