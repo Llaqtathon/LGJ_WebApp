@@ -112,8 +112,8 @@ public class MentorController {
 
   @PostMapping("/areas/{mentorId}")
   public ResponseEntity<List<MentorAreaResponse>> createMentorArea(
-    @RequestBody MentorAreaRequest request, @PathVariable String mentorId) {
-    List<MentorArea> mentorAreas = mentorService.createMentorAreas(Long.parseLong(mentorId), request);
+    @RequestBody MentorAreaRequest request, @PathVariable Long mentorId) {
+    List<MentorArea> mentorAreas = mentorService.createMentorAreas(mentorId, request);
     return new ResponseEntity<>(converter.convertMentorAreaToDto(mentorAreas), HttpStatus.OK);
   }
   @PutMapping("/areas/{mentorId}")
@@ -148,6 +148,11 @@ public class MentorController {
     @RequestBody MentorAvailabilitiesRequest request) {
     List<MentorAvailability> availability = mentorService.saveMentorAvailability(request);
     return new ResponseEntity<>(converter.convertMentorAvailabilityToDto(availability), HttpStatus.OK);
+  }
+  @DeleteMapping("/availability")
+  public ResponseEntity<Void> deleteMentorAvailability(@RequestBody List<Long> request) {
+    mentorService.deleteMentorAvailabilities(request);
+    return null;
   }
   @DeleteMapping("/availability/{availabilityId}")
   public ResponseEntity<Void> deleteMentorAvailability(@PathVariable String availabilityId) {
